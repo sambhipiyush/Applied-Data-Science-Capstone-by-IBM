@@ -1,0 +1,2110 @@
+\documentclass[11pt]{article}
+
+    \usepackage[breakable]{tcolorbox}
+    \usepackage{parskip} % Stop auto-indenting (to mimic markdown behaviour)
+    
+    \usepackage{iftex}
+    \ifPDFTeX
+    	\usepackage[T1]{fontenc}
+    	\usepackage{mathpazo}
+    \else
+    	\usepackage{fontspec}
+    \fi
+
+    % Basic figure setup, for now with no caption control since it's done
+    % automatically by Pandoc (which extracts ![](path) syntax from Markdown).
+    \usepackage{graphicx}
+    % Maintain compatibility with old templates. Remove in nbconvert 6.0
+    \let\Oldincludegraphics\includegraphics
+    % Ensure that by default, figures have no caption (until we provide a
+    % proper Figure object with a Caption API and a way to capture that
+    % in the conversion process - todo).
+    \usepackage{caption}
+    \DeclareCaptionFormat{nocaption}{}
+    \captionsetup{format=nocaption,aboveskip=0pt,belowskip=0pt}
+
+    \usepackage[Export]{adjustbox} % Used to constrain images to a maximum size
+    \adjustboxset{max size={0.9\linewidth}{0.9\paperheight}}
+    \usepackage{float}
+    \floatplacement{figure}{H} % forces figures to be placed at the correct location
+    \usepackage{xcolor} % Allow colors to be defined
+    \usepackage{enumerate} % Needed for markdown enumerations to work
+    \usepackage{geometry} % Used to adjust the document margins
+    \usepackage{amsmath} % Equations
+    \usepackage{amssymb} % Equations
+    \usepackage{textcomp} % defines textquotesingle
+    % Hack from http://tex.stackexchange.com/a/47451/13684:
+    \AtBeginDocument{%
+        \def\PYZsq{\textquotesingle}% Upright quotes in Pygmentized code
+    }
+    \usepackage{upquote} % Upright quotes for verbatim code
+    \usepackage{eurosym} % defines \euro
+    \usepackage[mathletters]{ucs} % Extended unicode (utf-8) support
+    \usepackage{fancyvrb} % verbatim replacement that allows latex
+    \usepackage{grffile} % extends the file name processing of package graphics 
+                         % to support a larger range
+    \makeatletter % fix for grffile with XeLaTeX
+    \def\Gread@@xetex#1{%
+      \IfFileExists{"\Gin@base".bb}%
+      {\Gread@eps{\Gin@base.bb}}%
+      {\Gread@@xetex@aux#1}%
+    }
+    \makeatother
+
+    % The hyperref package gives us a pdf with properly built
+    % internal navigation ('pdf bookmarks' for the table of contents,
+    % internal cross-reference links, web links for URLs, etc.)
+    \usepackage{hyperref}
+    % The default LaTeX title has an obnoxious amount of whitespace. By default,
+    % titling removes some of it. It also provides customization options.
+    \usepackage{titling}
+    \usepackage{longtable} % longtable support required by pandoc >1.10
+    \usepackage{booktabs}  % table support for pandoc > 1.12.2
+    \usepackage[inline]{enumitem} % IRkernel/repr support (it uses the enumerate* environment)
+    \usepackage[normalem]{ulem} % ulem is needed to support strikethroughs (\sout)
+                                % normalem makes italics be italics, not underlines
+    \usepackage{mathrsfs}
+    
+
+    
+    % Colors for the hyperref package
+    \definecolor{urlcolor}{rgb}{0,.145,.698}
+    \definecolor{linkcolor}{rgb}{.71,0.21,0.01}
+    \definecolor{citecolor}{rgb}{.12,.54,.11}
+
+    % ANSI colors
+    \definecolor{ansi-black}{HTML}{3E424D}
+    \definecolor{ansi-black-intense}{HTML}{282C36}
+    \definecolor{ansi-red}{HTML}{E75C58}
+    \definecolor{ansi-red-intense}{HTML}{B22B31}
+    \definecolor{ansi-green}{HTML}{00A250}
+    \definecolor{ansi-green-intense}{HTML}{007427}
+    \definecolor{ansi-yellow}{HTML}{DDB62B}
+    \definecolor{ansi-yellow-intense}{HTML}{B27D12}
+    \definecolor{ansi-blue}{HTML}{208FFB}
+    \definecolor{ansi-blue-intense}{HTML}{0065CA}
+    \definecolor{ansi-magenta}{HTML}{D160C4}
+    \definecolor{ansi-magenta-intense}{HTML}{A03196}
+    \definecolor{ansi-cyan}{HTML}{60C6C8}
+    \definecolor{ansi-cyan-intense}{HTML}{258F8F}
+    \definecolor{ansi-white}{HTML}{C5C1B4}
+    \definecolor{ansi-white-intense}{HTML}{A1A6B2}
+    \definecolor{ansi-default-inverse-fg}{HTML}{FFFFFF}
+    \definecolor{ansi-default-inverse-bg}{HTML}{000000}
+
+    % commands and environments needed by pandoc snippets
+    % extracted from the output of `pandoc -s`
+    \providecommand{\tightlist}{%
+      \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+    \DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+    % Add ',fontsize=\small' for more characters per line
+    \newenvironment{Shaded}{}{}
+    \newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{\textbf{{#1}}}}
+    \newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.56,0.13,0.00}{{#1}}}
+    \newcommand{\DecValTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\FloatTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\CharTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\StringTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\CommentTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textit{{#1}}}}
+    \newcommand{\OtherTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{{#1}}}
+    \newcommand{\AlertTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{\textbf{{#1}}}}
+    \newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.02,0.16,0.49}{{#1}}}
+    \newcommand{\RegionMarkerTok}[1]{{#1}}
+    \newcommand{\ErrorTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{\textbf{{#1}}}}
+    \newcommand{\NormalTok}[1]{{#1}}
+    
+    % Additional commands for more recent versions of Pandoc
+    \newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.53,0.00,0.00}{{#1}}}
+    \newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.73,0.40,0.53}{{#1}}}
+    \newcommand{\ImportTok}[1]{{#1}}
+    \newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.73,0.13,0.13}{\textit{{#1}}}}
+    \newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\VariableTok}[1]{\textcolor[rgb]{0.10,0.09,0.49}{{#1}}}
+    \newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{\textbf{{#1}}}}
+    \newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.40,0.40,0.40}{{#1}}}
+    \newcommand{\BuiltInTok}[1]{{#1}}
+    \newcommand{\ExtensionTok}[1]{{#1}}
+    \newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.74,0.48,0.00}{{#1}}}
+    \newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.49,0.56,0.16}{{#1}}}
+    \newcommand{\InformationTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\WarningTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    
+    
+    % Define a nice break command that doesn't care if a line doesn't already
+    % exist.
+    \def\br{\hspace*{\fill} \\* }
+    % Math Jax compatibility definitions
+    \def\gt{>}
+    \def\lt{<}
+    \let\Oldtex\TeX
+    \let\Oldlatex\LaTeX
+    \renewcommand{\TeX}{\textrm{\Oldtex}}
+    \renewcommand{\LaTeX}{\textrm{\Oldlatex}}
+    % Document parameters
+    % Document title
+    \title{DP0701EN-2-2-1-Foursquare-API-py-v1.0}
+    
+    
+    
+    
+    
+% Pygments definitions
+\makeatletter
+\def\PY@reset{\let\PY@it=\relax \let\PY@bf=\relax%
+    \let\PY@ul=\relax \let\PY@tc=\relax%
+    \let\PY@bc=\relax \let\PY@ff=\relax}
+\def\PY@tok#1{\csname PY@tok@#1\endcsname}
+\def\PY@toks#1+{\ifx\relax#1\empty\else%
+    \PY@tok{#1}\expandafter\PY@toks\fi}
+\def\PY@do#1{\PY@bc{\PY@tc{\PY@ul{%
+    \PY@it{\PY@bf{\PY@ff{#1}}}}}}}
+\def\PY#1#2{\PY@reset\PY@toks#1+\relax+\PY@do{#2}}
+
+\expandafter\def\csname PY@tok@w\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.73,0.73}{##1}}}
+\expandafter\def\csname PY@tok@c\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@cp\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.74,0.48,0.00}{##1}}}
+\expandafter\def\csname PY@tok@k\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@kp\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@kt\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.69,0.00,0.25}{##1}}}
+\expandafter\def\csname PY@tok@o\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@ow\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.67,0.13,1.00}{##1}}}
+\expandafter\def\csname PY@tok@nb\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@nf\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\expandafter\def\csname PY@tok@nc\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\expandafter\def\csname PY@tok@nn\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\expandafter\def\csname PY@tok@ne\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.82,0.25,0.23}{##1}}}
+\expandafter\def\csname PY@tok@nv\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@no\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.53,0.00,0.00}{##1}}}
+\expandafter\def\csname PY@tok@nl\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.63,0.63,0.00}{##1}}}
+\expandafter\def\csname PY@tok@ni\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.60,0.60,0.60}{##1}}}
+\expandafter\def\csname PY@tok@na\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.49,0.56,0.16}{##1}}}
+\expandafter\def\csname PY@tok@nt\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@nd\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.67,0.13,1.00}{##1}}}
+\expandafter\def\csname PY@tok@s\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sd\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@si\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.73,0.40,0.53}{##1}}}
+\expandafter\def\csname PY@tok@se\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.73,0.40,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sr\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.40,0.53}{##1}}}
+\expandafter\def\csname PY@tok@ss\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@sx\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@m\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@gh\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,0.50}{##1}}}
+\expandafter\def\csname PY@tok@gu\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.50,0.00,0.50}{##1}}}
+\expandafter\def\csname PY@tok@gd\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.63,0.00,0.00}{##1}}}
+\expandafter\def\csname PY@tok@gi\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.63,0.00}{##1}}}
+\expandafter\def\csname PY@tok@gr\endcsname{\def\PY@tc##1{\textcolor[rgb]{1.00,0.00,0.00}{##1}}}
+\expandafter\def\csname PY@tok@ge\endcsname{\let\PY@it=\textit}
+\expandafter\def\csname PY@tok@gs\endcsname{\let\PY@bf=\textbf}
+\expandafter\def\csname PY@tok@gp\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,0.50}{##1}}}
+\expandafter\def\csname PY@tok@go\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.53,0.53,0.53}{##1}}}
+\expandafter\def\csname PY@tok@gt\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.27,0.87}{##1}}}
+\expandafter\def\csname PY@tok@err\endcsname{\def\PY@bc##1{\setlength{\fboxsep}{0pt}\fcolorbox[rgb]{1.00,0.00,0.00}{1,1,1}{\strut ##1}}}
+\expandafter\def\csname PY@tok@kc\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@kd\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@kn\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@kr\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@bp\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@fm\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\expandafter\def\csname PY@tok@vc\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@vg\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@vi\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@vm\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@sa\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sb\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sc\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@dl\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@s2\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sh\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@s1\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@mb\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@mf\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@mh\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@mi\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@il\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@mo\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@ch\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@cm\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@cpf\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@c1\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@cs\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+
+\def\PYZbs{\char`\\}
+\def\PYZus{\char`\_}
+\def\PYZob{\char`\{}
+\def\PYZcb{\char`\}}
+\def\PYZca{\char`\^}
+\def\PYZam{\char`\&}
+\def\PYZlt{\char`\<}
+\def\PYZgt{\char`\>}
+\def\PYZsh{\char`\#}
+\def\PYZpc{\char`\%}
+\def\PYZdl{\char`\$}
+\def\PYZhy{\char`\-}
+\def\PYZsq{\char`\'}
+\def\PYZdq{\char`\"}
+\def\PYZti{\char`\~}
+% for compatibility with earlier versions
+\def\PYZat{@}
+\def\PYZlb{[}
+\def\PYZrb{]}
+\makeatother
+
+
+    % For linebreaks inside Verbatim environment from package fancyvrb. 
+    \makeatletter
+        \newbox\Wrappedcontinuationbox 
+        \newbox\Wrappedvisiblespacebox 
+        \newcommand*\Wrappedvisiblespace {\textcolor{red}{\textvisiblespace}} 
+        \newcommand*\Wrappedcontinuationsymbol {\textcolor{red}{\llap{\tiny$\m@th\hookrightarrow$}}} 
+        \newcommand*\Wrappedcontinuationindent {3ex } 
+        \newcommand*\Wrappedafterbreak {\kern\Wrappedcontinuationindent\copy\Wrappedcontinuationbox} 
+        % Take advantage of the already applied Pygments mark-up to insert 
+        % potential linebreaks for TeX processing. 
+        %        {, <, #, %, $, ' and ": go to next line. 
+        %        _, }, ^, &, >, - and ~: stay at end of broken line. 
+        % Use of \textquotesingle for straight quote. 
+        \newcommand*\Wrappedbreaksatspecials {% 
+            \def\PYGZus{\discretionary{\char`\_}{\Wrappedafterbreak}{\char`\_}}% 
+            \def\PYGZob{\discretionary{}{\Wrappedafterbreak\char`\{}{\char`\{}}% 
+            \def\PYGZcb{\discretionary{\char`\}}{\Wrappedafterbreak}{\char`\}}}% 
+            \def\PYGZca{\discretionary{\char`\^}{\Wrappedafterbreak}{\char`\^}}% 
+            \def\PYGZam{\discretionary{\char`\&}{\Wrappedafterbreak}{\char`\&}}% 
+            \def\PYGZlt{\discretionary{}{\Wrappedafterbreak\char`\<}{\char`\<}}% 
+            \def\PYGZgt{\discretionary{\char`\>}{\Wrappedafterbreak}{\char`\>}}% 
+            \def\PYGZsh{\discretionary{}{\Wrappedafterbreak\char`\#}{\char`\#}}% 
+            \def\PYGZpc{\discretionary{}{\Wrappedafterbreak\char`\%}{\char`\%}}% 
+            \def\PYGZdl{\discretionary{}{\Wrappedafterbreak\char`\$}{\char`\$}}% 
+            \def\PYGZhy{\discretionary{\char`\-}{\Wrappedafterbreak}{\char`\-}}% 
+            \def\PYGZsq{\discretionary{}{\Wrappedafterbreak\textquotesingle}{\textquotesingle}}% 
+            \def\PYGZdq{\discretionary{}{\Wrappedafterbreak\char`\"}{\char`\"}}% 
+            \def\PYGZti{\discretionary{\char`\~}{\Wrappedafterbreak}{\char`\~}}% 
+        } 
+        % Some characters . , ; ? ! / are not pygmentized. 
+        % This macro makes them "active" and they will insert potential linebreaks 
+        \newcommand*\Wrappedbreaksatpunct {% 
+            \lccode`\~`\.\lowercase{\def~}{\discretionary{\hbox{\char`\.}}{\Wrappedafterbreak}{\hbox{\char`\.}}}% 
+            \lccode`\~`\,\lowercase{\def~}{\discretionary{\hbox{\char`\,}}{\Wrappedafterbreak}{\hbox{\char`\,}}}% 
+            \lccode`\~`\;\lowercase{\def~}{\discretionary{\hbox{\char`\;}}{\Wrappedafterbreak}{\hbox{\char`\;}}}% 
+            \lccode`\~`\:\lowercase{\def~}{\discretionary{\hbox{\char`\:}}{\Wrappedafterbreak}{\hbox{\char`\:}}}% 
+            \lccode`\~`\?\lowercase{\def~}{\discretionary{\hbox{\char`\?}}{\Wrappedafterbreak}{\hbox{\char`\?}}}% 
+            \lccode`\~`\!\lowercase{\def~}{\discretionary{\hbox{\char`\!}}{\Wrappedafterbreak}{\hbox{\char`\!}}}% 
+            \lccode`\~`\/\lowercase{\def~}{\discretionary{\hbox{\char`\/}}{\Wrappedafterbreak}{\hbox{\char`\/}}}% 
+            \catcode`\.\active
+            \catcode`\,\active 
+            \catcode`\;\active
+            \catcode`\:\active
+            \catcode`\?\active
+            \catcode`\!\active
+            \catcode`\/\active 
+            \lccode`\~`\~ 	
+        }
+    \makeatother
+
+    \let\OriginalVerbatim=\Verbatim
+    \makeatletter
+    \renewcommand{\Verbatim}[1][1]{%
+        %\parskip\z@skip
+        \sbox\Wrappedcontinuationbox {\Wrappedcontinuationsymbol}%
+        \sbox\Wrappedvisiblespacebox {\FV@SetupFont\Wrappedvisiblespace}%
+        \def\FancyVerbFormatLine ##1{\hsize\linewidth
+            \vtop{\raggedright\hyphenpenalty\z@\exhyphenpenalty\z@
+                \doublehyphendemerits\z@\finalhyphendemerits\z@
+                \strut ##1\strut}%
+        }%
+        % If the linebreak is at a space, the latter will be displayed as visible
+        % space at end of first line, and a continuation symbol starts next line.
+        % Stretch/shrink are however usually zero for typewriter font.
+        \def\FV@Space {%
+            \nobreak\hskip\z@ plus\fontdimen3\font minus\fontdimen4\font
+            \discretionary{\copy\Wrappedvisiblespacebox}{\Wrappedafterbreak}
+            {\kern\fontdimen2\font}%
+        }%
+        
+        % Allow breaks at special characters using \PYG... macros.
+        \Wrappedbreaksatspecials
+        % Breaks at punctuation characters . , ; ? ! and / need catcode=\active 	
+        \OriginalVerbatim[#1,codes*=\Wrappedbreaksatpunct]%
+    }
+    \makeatother
+
+    % Exact colors from NB
+    \definecolor{incolor}{HTML}{303F9F}
+    \definecolor{outcolor}{HTML}{D84315}
+    \definecolor{cellborder}{HTML}{CFCFCF}
+    \definecolor{cellbackground}{HTML}{F7F7F7}
+    
+    % prompt
+    \makeatletter
+    \newcommand{\boxspacing}{\kern\kvtcb@left@rule\kern\kvtcb@boxsep}
+    \makeatother
+    \newcommand{\prompt}[4]{
+        \ttfamily\llap{{\color{#2}[#3]:\hspace{3pt}#4}}\vspace{-\baselineskip}
+    }
+    
+
+    
+    % Prevent overflowing lines due to hard-to-break entities
+    \sloppy 
+    % Setup hyperref package
+    \hypersetup{
+      breaklinks=true,  % so long urls are correctly broken across lines
+      colorlinks=true,
+      urlcolor=urlcolor,
+      linkcolor=linkcolor,
+      citecolor=citecolor,
+      }
+    % Slightly bigger margins than the latex defaults
+    
+    \geometry{verbose,tmargin=1in,bmargin=1in,lmargin=1in,rmargin=1in}
+    
+    
+
+\begin{document}
+    
+    \maketitle
+    
+    
+
+    
+    Learning FourSquare API with Python
+
+    
+
+    \hypertarget{introduction}{%
+\subsection{Introduction}\label{introduction}}
+
+In this lab, you will learn in details how to make calls to the
+Foursquare API for different purposes. You will learn how to construct a
+URL to send a request to the API to search for a specific type of
+venues, to explore a particular venue, to explore a Foursquare user, to
+explore a geographical location, and to get trending venues around a
+location. Also, you will learn how to use the visualization library,
+Folium, to visualize the results.
+
+    \hypertarget{table-of-contents}{%
+\subsection{Table of Contents}\label{table-of-contents}}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  Foursquare API Search Function
+\item
+  Explore a Given Venue\\
+\item
+  Explore a User\\
+\item
+  Foursquare API Explore Function\\
+\item
+  Get Trending Venues
+\end{enumerate}
+
+    \hypertarget{import-necessary-libraries}{%
+\subsubsection{Import necessary
+Libraries}\label{import-necessary-libraries}}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{3}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k+kn}{import} \PY{n+nn}{requests} \PY{c+c1}{\PYZsh{} library to handle requests}
+\PY{k+kn}{import} \PY{n+nn}{pandas} \PY{k}{as} \PY{n+nn}{pd} \PY{c+c1}{\PYZsh{} library for data analsysis}
+\PY{k+kn}{import} \PY{n+nn}{numpy} \PY{k}{as} \PY{n+nn}{np} \PY{c+c1}{\PYZsh{} library to handle data in a vectorized manner}
+\PY{k+kn}{import} \PY{n+nn}{random} \PY{c+c1}{\PYZsh{} library for random number generation}
+
+\PY{o}{!}conda install \PYZhy{}c conda\PYZhy{}forge geopy \PYZhy{}\PYZhy{}yes 
+\PY{k+kn}{from} \PY{n+nn}{geopy}\PY{n+nn}{.}\PY{n+nn}{geocoders} \PY{k+kn}{import} \PY{n}{Nominatim} \PY{c+c1}{\PYZsh{} module to convert an address into latitude and longitude values}
+
+\PY{c+c1}{\PYZsh{} libraries for displaying images}
+\PY{k+kn}{from} \PY{n+nn}{IPython}\PY{n+nn}{.}\PY{n+nn}{display} \PY{k+kn}{import} \PY{n}{Image} 
+\PY{k+kn}{from} \PY{n+nn}{IPython}\PY{n+nn}{.}\PY{n+nn}{core}\PY{n+nn}{.}\PY{n+nn}{display} \PY{k+kn}{import} \PY{n}{HTML} 
+    
+\PY{c+c1}{\PYZsh{} tranforming json file into a pandas dataframe library}
+\PY{k+kn}{from} \PY{n+nn}{pandas}\PY{n+nn}{.}\PY{n+nn}{io}\PY{n+nn}{.}\PY{n+nn}{json} \PY{k+kn}{import} \PY{n}{json\PYZus{}normalize}
+
+\PY{o}{!}conda install \PYZhy{}c conda\PYZhy{}forge \PY{n+nv}{folium}\PY{o}{=}\PY{l+m}{0}.5.0 \PYZhy{}\PYZhy{}yes
+\PY{k+kn}{import} \PY{n+nn}{folium} \PY{c+c1}{\PYZsh{} plotting library}
+
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Folium installed}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Libraries imported.}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+Collecting package metadata (current\_repodata.json): done
+Solving environment: done
+
+\# All requested packages already installed.
+
+Collecting package metadata (current\_repodata.json): done
+Solving environment: done
+
+\# All requested packages already installed.
+
+Folium installed
+Libraries imported.
+    \end{Verbatim}
+
+    \hypertarget{define-foursquare-credentials-and-version}{%
+\subsubsection{Define Foursquare Credentials and
+Version}\label{define-foursquare-credentials-and-version}}
+
+    \hypertarget{make-sure-that-you-have-created-a-foursquare-developer-account-and-have-your-credentials-handy}{%
+\subparagraph{Make sure that you have created a Foursquare developer
+account and have your credentials
+handy}\label{make-sure-that-you-have-created-a-foursquare-developer-account-and-have-your-credentials-handy}}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{4}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{CLIENT\PYZus{}ID} \PY{o}{=} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{1D4LUFF5Y0G2E2M52RW2QRFJLDT5CJH1QJUN0ANQLIJJCPU3}\PY{l+s+s1}{\PYZsq{}} \PY{c+c1}{\PYZsh{} \PYZsq{}your\PYZhy{}client\PYZhy{}ID\PYZsq{} \PYZsh{} your Foursquare ID}
+\PY{n}{CLIENT\PYZus{}SECRET} \PY{o}{=} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{05X3YLFANXLSHZ0J3RLUWTY3QGZ0D2ZCJQGSQDU5QBCCUEKL}\PY{l+s+s1}{\PYZsq{}} \PY{c+c1}{\PYZsh{} \PYZsq{}your\PYZhy{}client\PYZhy{}secret\PYZsq{} \PYZsh{} your Foursquare Secret}
+\PY{n}{VERSION} \PY{o}{=} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{20180604}\PY{l+s+s1}{\PYZsq{}}
+\PY{n}{LIMIT} \PY{o}{=} \PY{l+m+mi}{30}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Your credentails:}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{CLIENT\PYZus{}ID: }\PY{l+s+s1}{\PYZsq{}} \PY{o}{+} \PY{n}{CLIENT\PYZus{}ID}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{CLIENT\PYZus{}SECRET:}\PY{l+s+s1}{\PYZsq{}} \PY{o}{+} \PY{n}{CLIENT\PYZus{}SECRET}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+Your credentails:
+CLIENT\_ID: 1D4LUFF5Y0G2E2M52RW2QRFJLDT5CJH1QJUN0ANQLIJJCPU3
+CLIENT\_SECRET:05X3YLFANXLSHZ0J3RLUWTY3QGZ0D2ZCJQGSQDU5QBCCUEKL
+    \end{Verbatim}
+
+    
+
+    \hypertarget{lets-again-assume-that-you-are-staying-at-the-conrad-hotel.-so-lets-start-by-converting-the-contrad-hotels-address-to-its-latitude-and-longitude-coordinates.}{%
+\paragraph{Let's again assume that you are staying at the Conrad hotel.
+So let's start by converting the Contrad Hotel's address to its latitude
+and longitude
+coordinates.}\label{lets-again-assume-that-you-are-staying-at-the-conrad-hotel.-so-lets-start-by-converting-the-contrad-hotels-address-to-its-latitude-and-longitude-coordinates.}}
+
+    In order to define an instance of the geocoder, we need to define a
+user\_agent. We will name our agent foursquare\_agent, as shown below.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{5}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{address} \PY{o}{=} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{102 North End Ave, New York, NY}\PY{l+s+s1}{\PYZsq{}}
+
+\PY{n}{geolocator} \PY{o}{=} \PY{n}{Nominatim}\PY{p}{(}\PY{n}{user\PYZus{}agent}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{foursquare\PYZus{}agent}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{location} \PY{o}{=} \PY{n}{geolocator}\PY{o}{.}\PY{n}{geocode}\PY{p}{(}\PY{n}{address}\PY{p}{)}
+\PY{n}{latitude} \PY{o}{=} \PY{n}{location}\PY{o}{.}\PY{n}{latitude}
+\PY{n}{longitude} \PY{o}{=} \PY{n}{location}\PY{o}{.}\PY{n}{longitude}
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{latitude}\PY{p}{,} \PY{n}{longitude}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+40.7151482 -74.0156573
+    \end{Verbatim}
+
+    
+
+    
+
+    \hypertarget{search-for-a-specific-venue-category}{%
+\subsection{1. Search for a specific venue
+category}\label{search-for-a-specific-venue-category}}
+
+\begin{quote}
+\texttt{https://api.foursquare.com/v2/venues/}\textbf{search}\texttt{?client\_id=}\textbf{CLIENT\_ID}\texttt{\&client\_secret=}\textbf{CLIENT\_SECRET}\texttt{\&ll=}\textbf{LATITUDE}\texttt{,}\textbf{LONGITUDE}\texttt{\&v=}\textbf{VERSION}\texttt{\&query=}\textbf{QUERY}\texttt{\&radius=}\textbf{RADIUS}\texttt{\&limit=}\textbf{LIMIT}
+\end{quote}
+
+    \hypertarget{now-lets-assume-that-it-is-lunch-time-and-you-are-craving-italian-food.-so-lets-define-a-query-to-search-for-italian-food-that-is-within-500-metres-from-the-conrad-hotel.}{%
+\paragraph{Now, let's assume that it is lunch time, and you are craving
+Italian food. So, let's define a query to search for Italian food that
+is within 500 metres from the Conrad
+Hotel.}\label{now-lets-assume-that-it-is-lunch-time-and-you-are-craving-italian-food.-so-lets-define-a-query-to-search-for-italian-food-that-is-within-500-metres-from-the-conrad-hotel.}}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{6}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{search\PYZus{}query} \PY{o}{=} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Italian}\PY{l+s+s1}{\PYZsq{}}
+\PY{n}{radius} \PY{o}{=} \PY{l+m+mi}{500}
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{search\PYZus{}query} \PY{o}{+} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{ .... OK!}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+Italian {\ldots} OK!
+    \end{Verbatim}
+
+    \hypertarget{define-the-corresponding-url}{%
+\paragraph{Define the corresponding
+URL}\label{define-the-corresponding-url}}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{7}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{url} \PY{o}{=} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{https://api.foursquare.com/v2/venues/search?client\PYZus{}id=}\PY{l+s+si}{\PYZob{}\PYZcb{}}\PY{l+s+s1}{\PYZam{}client\PYZus{}secret=}\PY{l+s+si}{\PYZob{}\PYZcb{}}\PY{l+s+s1}{\PYZam{}ll=}\PY{l+s+si}{\PYZob{}\PYZcb{}}\PY{l+s+s1}{,}\PY{l+s+si}{\PYZob{}\PYZcb{}}\PY{l+s+s1}{\PYZam{}v=}\PY{l+s+si}{\PYZob{}\PYZcb{}}\PY{l+s+s1}{\PYZam{}query=}\PY{l+s+si}{\PYZob{}\PYZcb{}}\PY{l+s+s1}{\PYZam{}radius=}\PY{l+s+si}{\PYZob{}\PYZcb{}}\PY{l+s+s1}{\PYZam{}limit=}\PY{l+s+si}{\PYZob{}\PYZcb{}}\PY{l+s+s1}{\PYZsq{}}\PY{o}{.}\PY{n}{format}\PY{p}{(}\PY{n}{CLIENT\PYZus{}ID}\PY{p}{,} \PY{n}{CLIENT\PYZus{}SECRET}\PY{p}{,} \PY{n}{latitude}\PY{p}{,} \PY{n}{longitude}\PY{p}{,} \PY{n}{VERSION}\PY{p}{,} \PY{n}{search\PYZus{}query}\PY{p}{,} \PY{n}{radius}\PY{p}{,} \PY{n}{LIMIT}\PY{p}{)}
+\PY{n}{url}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{7}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+'https://api.foursquare.com/v2/venues/search?client\_id=1D4LUFF5Y0G2E2M52RW2QRFJL
+DT5CJH1QJUN0ANQLIJJCPU3\&client\_secret=05X3YLFANXLSHZ0J3RLUWTY3QGZ0D2ZCJQGSQDU5QB
+CCUEKL\&ll=40.7151482,-74.0156573\&v=20180604\&query=Italian\&radius=500\&limit=30'
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \hypertarget{send-the-get-request-and-examine-the-results}{%
+\paragraph{Send the GET Request and examine the
+results}\label{send-the-get-request-and-examine-the-results}}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{8}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{results} \PY{o}{=} \PY{n}{requests}\PY{o}{.}\PY{n}{get}\PY{p}{(}\PY{n}{url}\PY{p}{)}\PY{o}{.}\PY{n}{json}\PY{p}{(}\PY{p}{)}
+\PY{n}{results}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{8}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\{'meta': \{'code': 200, 'requestId': '5f1ec4773d22411a21ed200d'\},
+ 'response': \{'venues': [\{'id': '4fa862b3e4b0ebff2f749f06',
+    'name': "Harry's Italian Pizza Bar",
+    'location': \{'address': '225 Murray St',
+     'lat': 40.71521779064671,
+     'lng': -74.01473940209351,
+     'labeledLatLngs': [\{'label': 'display',
+       'lat': 40.71521779064671,
+       'lng': -74.01473940209351\},
+      \{'label': 'entrance', 'lat': 40.715361, 'lng': -74.014975\}],
+     'distance': 77,
+     'postalCode': '10282',
+     'cc': 'US',
+     'city': 'New York',
+     'state': 'NY',
+     'country': 'United States',
+     'formattedAddress': ['225 Murray St',
+      'New York, NY 10282',
+      'United States']\},
+    'categories': [\{'id': '4bf58dd8d48988d1ca941735',
+      'name': 'Pizza Place',
+      'pluralName': 'Pizza Places',
+      'shortName': 'Pizza',
+      'icon': \{'prefix': 'https://ss3.4sqi.net/img/categories\_v2/food/pizza\_',
+       'suffix': '.png'\},
+      'primary': True\}],
+    'referralId': 'v-1595852451',
+    'hasPerk': False\},
+   \{'id': '4f3232e219836c91c7bfde94',
+    'name': 'Conca Cucina Italian Restaurant',
+    'location': \{'address': '63 W Broadway',
+     'lat': 40.714484000000006,
+     'lng': -74.00980600000001,
+     'labeledLatLngs': [\{'label': 'display',
+       'lat': 40.714484000000006,
+       'lng': -74.00980600000001\}],
+     'distance': 499,
+     'postalCode': '10007',
+     'cc': 'US',
+     'city': 'New York',
+     'state': 'NY',
+     'country': 'United States',
+     'formattedAddress': ['63 W Broadway',
+      'New York, NY 10007',
+      'United States']\},
+    'categories': [\{'id': '4d4b7105d754a06374d81259',
+      'name': 'Food',
+      'pluralName': 'Food',
+      'shortName': 'Food',
+      'icon': \{'prefix': 'https://ss3.4sqi.net/img/categories\_v2/food/default\_',
+       'suffix': '.png'\},
+      'primary': True\}],
+    'referralId': 'v-1595852451',
+    'hasPerk': False\}]\}\}
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \hypertarget{get-relevant-part-of-json-and-transform-it-into-a-pandas-dataframe}{%
+\paragraph{\texorpdfstring{Get relevant part of JSON and transform it
+into a \emph{pandas}
+dataframe}{Get relevant part of JSON and transform it into a pandas dataframe}}\label{get-relevant-part-of-json-and-transform-it-into-a-pandas-dataframe}}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{12}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} assign relevant part of JSON to venues}
+\PY{n}{venues} \PY{o}{=} \PY{n}{results}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{response}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{venues}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}
+
+\PY{c+c1}{\PYZsh{} tranform venues into a dataframe}
+\PY{c+c1}{\PYZsh{} dataframe = json\PYZus{}normalize(venues)}
+\PY{n}{dataframe} \PY{o}{=} \PY{n}{pd}\PY{o}{.}\PY{n}{json\PYZus{}normalize}\PY{p}{(}\PY{n}{venues}\PY{p}{)}
+\PY{n}{dataframe}\PY{o}{.}\PY{n}{head}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{12}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+                         id                             name  \textbackslash{}
+0  4fa862b3e4b0ebff2f749f06        Harry's Italian Pizza Bar
+1  4f3232e219836c91c7bfde94  Conca Cucina Italian Restaurant
+
+                                          categories    referralId  hasPerk  \textbackslash{}
+0  [\{'id': '4bf58dd8d48988d1ca941735', 'name': 'P{\ldots}  v-1595852451    False
+1  [\{'id': '4d4b7105d754a06374d81259', 'name': 'F{\ldots}  v-1595852451    False
+
+  location.address  location.lat  location.lng  \textbackslash{}
+0    225 Murray St     40.715218    -74.014739
+1    63 W Broadway     40.714484    -74.009806
+
+                             location.labeledLatLngs  location.distance  \textbackslash{}
+0  [\{'label': 'display', 'lat': 40.71521779064671{\ldots}                 77
+1  [\{'label': 'display', 'lat': 40.71448400000000{\ldots}                499
+
+  location.postalCode location.cc location.city location.state  \textbackslash{}
+0               10282          US      New York             NY
+1               10007          US      New York             NY
+
+  location.country                          location.formattedAddress
+0    United States  [225 Murray St, New York, NY 10282, United Sta{\ldots}
+1    United States  [63 W Broadway, New York, NY 10007, United Sta{\ldots}
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \hypertarget{define-information-of-interest-and-filter-dataframe}{%
+\paragraph{Define information of interest and filter
+dataframe}\label{define-information-of-interest-and-filter-dataframe}}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{13}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} keep only columns that include venue name, and anything that is associated with location}
+\PY{n}{filtered\PYZus{}columns} \PY{o}{=} \PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{name}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{categories}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{+} \PY{p}{[}\PY{n}{col} \PY{k}{for} \PY{n}{col} \PY{o+ow}{in} \PY{n}{dataframe}\PY{o}{.}\PY{n}{columns} \PY{k}{if} \PY{n}{col}\PY{o}{.}\PY{n}{startswith}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{location.}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}\PY{p}{]} \PY{o}{+} \PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{id}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}
+\PY{n}{dataframe\PYZus{}filtered} \PY{o}{=} \PY{n}{dataframe}\PY{o}{.}\PY{n}{loc}\PY{p}{[}\PY{p}{:}\PY{p}{,} \PY{n}{filtered\PYZus{}columns}\PY{p}{]}
+
+\PY{c+c1}{\PYZsh{} function that extracts the category of the venue}
+\PY{k}{def} \PY{n+nf}{get\PYZus{}category\PYZus{}type}\PY{p}{(}\PY{n}{row}\PY{p}{)}\PY{p}{:}
+    \PY{k}{try}\PY{p}{:}
+        \PY{n}{categories\PYZus{}list} \PY{o}{=} \PY{n}{row}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{categories}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}
+    \PY{k}{except}\PY{p}{:}
+        \PY{n}{categories\PYZus{}list} \PY{o}{=} \PY{n}{row}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{venue.categories}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}
+        
+    \PY{k}{if} \PY{n+nb}{len}\PY{p}{(}\PY{n}{categories\PYZus{}list}\PY{p}{)} \PY{o}{==} \PY{l+m+mi}{0}\PY{p}{:}
+        \PY{k}{return} \PY{k+kc}{None}
+    \PY{k}{else}\PY{p}{:}
+        \PY{k}{return} \PY{n}{categories\PYZus{}list}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{name}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}
+
+\PY{c+c1}{\PYZsh{} filter the category for each row}
+\PY{n}{dataframe\PYZus{}filtered}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{categories}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{=} \PY{n}{dataframe\PYZus{}filtered}\PY{o}{.}\PY{n}{apply}\PY{p}{(}\PY{n}{get\PYZus{}category\PYZus{}type}\PY{p}{,} \PY{n}{axis}\PY{o}{=}\PY{l+m+mi}{1}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} clean column names by keeping only last term}
+\PY{n}{dataframe\PYZus{}filtered}\PY{o}{.}\PY{n}{columns} \PY{o}{=} \PY{p}{[}\PY{n}{column}\PY{o}{.}\PY{n}{split}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{.}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}\PY{p}{[}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{]} \PY{k}{for} \PY{n}{column} \PY{o+ow}{in} \PY{n}{dataframe\PYZus{}filtered}\PY{o}{.}\PY{n}{columns}\PY{p}{]}
+
+\PY{n}{dataframe\PYZus{}filtered}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{13}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+                              name   categories        address        lat  \textbackslash{}
+0        Harry's Italian Pizza Bar  Pizza Place  225 Murray St  40.715218
+1  Conca Cucina Italian Restaurant         Food  63 W Broadway  40.714484
+
+         lng                                     labeledLatLngs  distance  \textbackslash{}
+0 -74.014739  [\{'label': 'display', 'lat': 40.71521779064671{\ldots}        77
+1 -74.009806  [\{'label': 'display', 'lat': 40.71448400000000{\ldots}       499
+
+  postalCode  cc      city state        country  \textbackslash{}
+0      10282  US  New York    NY  United States
+1      10007  US  New York    NY  United States
+
+                                    formattedAddress                        id
+0  [225 Murray St, New York, NY 10282, United Sta{\ldots}  4fa862b3e4b0ebff2f749f06
+1  [63 W Broadway, New York, NY 10007, United Sta{\ldots}  4f3232e219836c91c7bfde94
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \hypertarget{lets-visualize-the-italian-restaurants-that-are-nearby}{%
+\paragraph{Let's visualize the Italian restaurants that are
+nearby}\label{lets-visualize-the-italian-restaurants-that-are-nearby}}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{14}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{dataframe\PYZus{}filtered}\PY{o}{.}\PY{n}{name}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{14}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+0          Harry's Italian Pizza Bar
+1    Conca Cucina Italian Restaurant
+Name: name, dtype: object
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{15}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{venues\PYZus{}map} \PY{o}{=} \PY{n}{folium}\PY{o}{.}\PY{n}{Map}\PY{p}{(}\PY{n}{location}\PY{o}{=}\PY{p}{[}\PY{n}{latitude}\PY{p}{,} \PY{n}{longitude}\PY{p}{]}\PY{p}{,} \PY{n}{zoom\PYZus{}start}\PY{o}{=}\PY{l+m+mi}{13}\PY{p}{)} \PY{c+c1}{\PYZsh{} generate map centred around the Conrad Hotel}
+
+\PY{c+c1}{\PYZsh{} add a red circle marker to represent the Conrad Hotel}
+\PY{n}{folium}\PY{o}{.}\PY{n}{features}\PY{o}{.}\PY{n}{CircleMarker}\PY{p}{(}
+    \PY{p}{[}\PY{n}{latitude}\PY{p}{,} \PY{n}{longitude}\PY{p}{]}\PY{p}{,}
+    \PY{n}{radius}\PY{o}{=}\PY{l+m+mi}{10}\PY{p}{,}
+    \PY{n}{color}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{red}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}
+    \PY{n}{popup}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Conrad Hotel}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}
+    \PY{n}{fill} \PY{o}{=} \PY{k+kc}{True}\PY{p}{,}
+    \PY{n}{fill\PYZus{}color} \PY{o}{=} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{red}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}
+    \PY{n}{fill\PYZus{}opacity} \PY{o}{=} \PY{l+m+mf}{0.6}
+\PY{p}{)}\PY{o}{.}\PY{n}{add\PYZus{}to}\PY{p}{(}\PY{n}{venues\PYZus{}map}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} add the Italian restaurants as blue circle markers}
+\PY{k}{for} \PY{n}{lat}\PY{p}{,} \PY{n}{lng}\PY{p}{,} \PY{n}{label} \PY{o+ow}{in} \PY{n+nb}{zip}\PY{p}{(}\PY{n}{dataframe\PYZus{}filtered}\PY{o}{.}\PY{n}{lat}\PY{p}{,} \PY{n}{dataframe\PYZus{}filtered}\PY{o}{.}\PY{n}{lng}\PY{p}{,} \PY{n}{dataframe\PYZus{}filtered}\PY{o}{.}\PY{n}{categories}\PY{p}{)}\PY{p}{:}
+    \PY{n}{folium}\PY{o}{.}\PY{n}{features}\PY{o}{.}\PY{n}{CircleMarker}\PY{p}{(}
+        \PY{p}{[}\PY{n}{lat}\PY{p}{,} \PY{n}{lng}\PY{p}{]}\PY{p}{,}
+        \PY{n}{radius}\PY{o}{=}\PY{l+m+mi}{5}\PY{p}{,}
+        \PY{n}{color}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{blue}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}
+        \PY{n}{popup}\PY{o}{=}\PY{n}{label}\PY{p}{,}
+        \PY{n}{fill} \PY{o}{=} \PY{k+kc}{True}\PY{p}{,}
+        \PY{n}{fill\PYZus{}color}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{blue}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}
+        \PY{n}{fill\PYZus{}opacity}\PY{o}{=}\PY{l+m+mf}{0.6}
+    \PY{p}{)}\PY{o}{.}\PY{n}{add\PYZus{}to}\PY{p}{(}\PY{n}{venues\PYZus{}map}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} display map}
+\PY{n}{venues\PYZus{}map}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{15}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+<folium.folium.Map at 0x7f133d5f2710>
+\end{Verbatim}
+\end{tcolorbox}
+        
+    
+
+    
+
+    \hypertarget{explore-a-given-venue}{%
+\subsection{2. Explore a Given Venue}\label{explore-a-given-venue}}
+
+\begin{quote}
+\texttt{https://api.foursquare.com/v2/venues/}\textbf{VENUE\_ID}\texttt{?client\_id=}\textbf{CLIENT\_ID}\texttt{\&client\_secret=}\textbf{CLIENT\_SECRET}\texttt{\&v=}\textbf{VERSION}
+\end{quote}
+
+    \hypertarget{a.-lets-explore-the-closest-italian-restaurant-harrys-italian-pizza-bar}{%
+\subsubsection{\texorpdfstring{A. Let's explore the closest Italian
+restaurant -- \emph{Harry's Italian Pizza
+Bar}}{A. Let's explore the closest Italian restaurant -- Harry's Italian Pizza Bar}}\label{a.-lets-explore-the-closest-italian-restaurant-harrys-italian-pizza-bar}}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{16}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{venue\PYZus{}id} \PY{o}{=} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{4fa862b3e4b0ebff2f749f06}\PY{l+s+s1}{\PYZsq{}} \PY{c+c1}{\PYZsh{} ID of Harry\PYZsq{}s Italian Pizza Bar}
+\PY{n}{url} \PY{o}{=} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{https://api.foursquare.com/v2/venues/}\PY{l+s+si}{\PYZob{}\PYZcb{}}\PY{l+s+s1}{?client\PYZus{}id=}\PY{l+s+si}{\PYZob{}\PYZcb{}}\PY{l+s+s1}{\PYZam{}client\PYZus{}secret=}\PY{l+s+si}{\PYZob{}\PYZcb{}}\PY{l+s+s1}{\PYZam{}v=}\PY{l+s+si}{\PYZob{}\PYZcb{}}\PY{l+s+s1}{\PYZsq{}}\PY{o}{.}\PY{n}{format}\PY{p}{(}\PY{n}{venue\PYZus{}id}\PY{p}{,} \PY{n}{CLIENT\PYZus{}ID}\PY{p}{,} \PY{n}{CLIENT\PYZus{}SECRET}\PY{p}{,} \PY{n}{VERSION}\PY{p}{)}
+\PY{n}{url}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{16}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+'https://api.foursquare.com/v2/venues/4fa862b3e4b0ebff2f749f06?client\_id=1D4LUFF
+5Y0G2E2M52RW2QRFJLDT5CJH1QJUN0ANQLIJJCPU3\&client\_secret=05X3YLFANXLSHZ0J3RLUWTY3
+QGZ0D2ZCJQGSQDU5QBCCUEKL\&v=20180604'
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \hypertarget{send-get-request-for-result}{%
+\paragraph{Send GET request for
+result}\label{send-get-request-for-result}}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{17}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{result} \PY{o}{=} \PY{n}{requests}\PY{o}{.}\PY{n}{get}\PY{p}{(}\PY{n}{url}\PY{p}{)}\PY{o}{.}\PY{n}{json}\PY{p}{(}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{result}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{response}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{venue}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{o}{.}\PY{n}{keys}\PY{p}{(}\PY{p}{)}\PY{p}{)}
+\PY{n}{result}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{response}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{venue}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+dict\_keys(['id', 'name', 'contact', 'location', 'canonicalUrl', 'categories',
+'verified', 'stats', 'url', 'price', 'hasMenu', 'likes', 'dislike', 'ok',
+'rating', 'ratingColor', 'ratingSignals', 'menu', 'allowMenuUrlEdit',
+'beenHere', 'specials', 'photos', 'reasons', 'hereNow', 'createdAt', 'tips',
+'shortUrl', 'timeZone', 'listed', 'hours', 'popular', 'seasonalHours',
+'defaultHours', 'pageUpdates', 'inbox', 'attributes', 'bestPhoto', 'colors'])
+    \end{Verbatim}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{17}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\{'id': '4fa862b3e4b0ebff2f749f06',
+ 'name': "Harry's Italian Pizza Bar",
+ 'contact': \{'phone': '2126081007', 'formattedPhone': '(212) 608-1007'\},
+ 'location': \{'address': '225 Murray St',
+  'lat': 40.71521779064671,
+  'lng': -74.01473940209351,
+  'labeledLatLngs': [\{'label': 'display',
+    'lat': 40.71521779064671,
+    'lng': -74.01473940209351\},
+   \{'label': 'entrance', 'lat': 40.715361, 'lng': -74.014975\}],
+  'postalCode': '10282',
+  'cc': 'US',
+  'city': 'New York',
+  'state': 'NY',
+  'country': 'United States',
+  'formattedAddress': ['225 Murray St',
+   'New York, NY 10282',
+   'United States']\},
+ 'canonicalUrl': 'https://foursquare.com/v/harrys-italian-pizza-
+bar/4fa862b3e4b0ebff2f749f06',
+ 'categories': [\{'id': '4bf58dd8d48988d1ca941735',
+   'name': 'Pizza Place',
+   'pluralName': 'Pizza Places',
+   'shortName': 'Pizza',
+   'icon': \{'prefix': 'https://ss3.4sqi.net/img/categories\_v2/food/pizza\_',
+    'suffix': '.png'\},
+   'primary': True\},
+  \{'id': '4bf58dd8d48988d110941735',
+   'name': 'Italian Restaurant',
+   'pluralName': 'Italian Restaurants',
+   'shortName': 'Italian',
+   'icon': \{'prefix': 'https://ss3.4sqi.net/img/categories\_v2/food/italian\_',
+    'suffix': '.png'\}\}],
+ 'verified': False,
+ 'stats': \{'tipCount': 57\},
+ 'url': 'http://harrysitalian.com',
+ 'price': \{'tier': 2, 'message': 'Moderate', 'currency': '\$'\},
+ 'hasMenu': True,
+ 'likes': \{'count': 120,
+  'groups': [\{'type': 'others', 'count': 120, 'items': []\}],
+  'summary': '120 Likes'\},
+ 'dislike': False,
+ 'ok': False,
+ 'rating': 6.9,
+ 'ratingColor': 'FFC800',
+ 'ratingSignals': 212,
+ 'menu': \{'type': 'Menu',
+  'label': 'Menu',
+  'anchor': 'View Menu',
+  'url': 'https://foursquare.com/v/harrys-italian-pizza-
+bar/4fa862b3e4b0ebff2f749f06/menu',
+  'mobileUrl': 'https://foursquare.com/v/4fa862b3e4b0ebff2f749f06/device\_menu'\},
+ 'allowMenuUrlEdit': True,
+ 'beenHere': \{'count': 0,
+  'unconfirmedCount': 0,
+  'marked': False,
+  'lastCheckinExpiredAt': 0\},
+ 'specials': \{'count': 0, 'items': []\},
+ 'photos': \{'count': 146,
+  'groups': [\{'type': 'venue',
+    'name': 'Venue photos',
+    'count': 146,
+    'items': [\{'id': '4fad980de4b091b4626c3633',
+      'createdAt': 1336776717,
+      'source': \{'name': 'Foursquare for Android',
+       'url': 'https://foursquare.com/download/\#/android'\},
+      'prefix': 'https://fastly.4sqi.net/img/general/',
+      'suffix': '/ya1iQFI7pLjuIJp1PGDKlrZS3OJdHCF7tpILMmjv\_2w.jpg',
+      'width': 480,
+      'height': 640,
+      'user': \{'id': '13676709',
+       'firstName': 'Leony',
+       'lastName': 'N',
+       'photo': \{'prefix': 'https://fastly.4sqi.net/img/user/',
+        'suffix': '/T0ANFNGNMCHUDEUE.jpg'\}\},
+      'visibility': 'public'\}]\}]\},
+ 'reasons': \{'count': 1,
+  'items': [\{'summary': 'Lots of people like this place',
+    'type': 'general',
+    'reasonName': 'rawLikesReason'\}]\},
+ 'hereNow': \{'count': 0, 'summary': 'Nobody here', 'groups': []\},
+ 'createdAt': 1336435379,
+ 'tips': \{'count': 57,
+  'groups': [\{'type': 'others',
+    'name': 'All tips',
+    'count': 57,
+    'items': [\{'id': '53d27909498e0523841340b6',
+      'createdAt': 1406302473,
+      'text': "Harry's Italian Pizza bar is known for it's amazing pizza, but
+did you know that the brunches here are amazing too? Try the Nutella French
+toast and we know you'll be sold.",
+      'type': 'user',
+      'canonicalUrl': 'https://foursquare.com/item/53d27909498e0523841340b6',
+      'lang': 'en',
+      'likes': \{'count': 4,
+       'groups': [\{'type': 'others',
+         'count': 4,
+         'items': [\{'id': '369426',
+           'firstName': 'P.',
+           'lastName': 'M',
+           'photo': \{'prefix': 'https://fastly.4sqi.net/img/user/',
+            'suffix': '/JPQYUWJKUT0H2OO4.jpg'\}\},
+          \{'id': '87587879',
+           'firstName': 'Diane',
+           'lastName': 'D',
+           'photo': \{'prefix': 'https://fastly.4sqi.net/img/user/',
+            'suffix': '/87587879-ESLRSZLQ2CBE2P4W.jpg'\}\},
+          \{'id': '87591341',
+           'firstName': 'Tim',
+           'lastName': 'S',
+           'photo': \{'prefix': 'https://fastly.4sqi.net/img/user/',
+            'suffix': '/-Z4YK4VKE0JSVXIY1.jpg'\}\},
+          \{'id': '87473404',
+           'firstName': 'TenantKing.com',
+           'photo': \{'prefix': 'https://fastly.4sqi.net/img/user/',
+            'suffix': '/87473404-HI5DTBTK0HX401CA.png'\},
+           'type': 'page'\}]\}],
+       'summary': '4 likes'\},
+      'logView': True,
+      'agreeCount': 4,
+      'disagreeCount': 0,
+      'todo': \{'count': 0\},
+      'user': \{'id': '87473404',
+       'firstName': 'TenantKing.com',
+       'photo': \{'prefix': 'https://fastly.4sqi.net/img/user/',
+        'suffix': '/87473404-HI5DTBTK0HX401CA.png'\},
+       'type': 'page'\}\}]\}]\},
+ 'shortUrl': 'http://4sq.com/JNblHV',
+ 'timeZone': 'America/New\_York',
+ 'listed': \{'count': 54,
+  'groups': [\{'type': 'others',
+    'name': 'Lists from other people',
+    'count': 54,
+    'items': [\{'id': '4fa32fd0e4b04193744746b1',
+      'name': 'Manhattan Haunts',
+      'description': '',
+      'type': 'others',
+      'user': \{'id': '24592223',
+       'firstName': 'Becca',
+       'lastName': 'M',
+       'photo': \{'prefix': 'https://fastly.4sqi.net/img/user/',
+        'suffix': '/24592223-RAW2UYM0GIB1U40K.jpg'\}\},
+      'editable': False,
+      'public': True,
+      'collaborative': False,
+      'url': '/becca\_mcarthur/list/manhattan-haunts',
+      'canonicalUrl': 'https://foursquare.com/becca\_mcarthur/list/manhattan-
+haunts',
+      'createdAt': 1336094672,
+      'updatedAt': 1380845377,
+      'photo': \{'id': '4e8cc9461081e3b3544e12e5',
+       'createdAt': 1317849414,
+       'prefix': 'https://fastly.4sqi.net/img/general/',
+       'suffix': '/0NLVU2HC1JF4DXIMKWUFW3QBUT31DC11EFNYYHMJG3NDWAPS.jpg',
+       'width': 492,
+       'height': 330,
+       'user': \{'id': '742542',
+        'firstName': 'Time Out New York',
+        'photo': \{'prefix': 'https://fastly.4sqi.net/img/user/',
+         'suffix': '/XXHKCBSQHBORZNSR.jpg'\},
+        'type': 'page'\},
+       'visibility': 'public'\},
+      'followers': \{'count': 22\},
+      'listItems': \{'count': 187,
+       'items': [\{'id': 'v4fa862b3e4b0ebff2f749f06',
+         'createdAt': 1342934485\}]\}\},
+     \{'id': '4fae817be4b085f6b2a74d19',
+      'name': 'USA NYC MAN FiDi',
+      'description': 'Where to go for decent eats in the restaurant wasteland of
+Downtown NYC aka FiDi, along with Tribeca \& Battery Park City.',
+      'type': 'others',
+      'user': \{'id': '12113441',
+       'firstName': 'Kino',
+       'photo': \{'prefix': 'https://fastly.4sqi.net/img/user/',
+        'suffix': '/12113441-K5HTHFLU2MUCM0CM.jpg'\}\},
+      'editable': False,
+      'public': True,
+      'collaborative': False,
+      'url': '/kinosfault/list/usa-nyc-man-fidi',
+      'canonicalUrl': 'https://foursquare.com/kinosfault/list/usa-nyc-man-fidi',
+      'createdAt': 1336836475,
+      'updatedAt': 1556754919,
+      'photo': \{'id': '55984992498e13ba75e353bb',
+       'createdAt': 1436043666,
+       'prefix': 'https://fastly.4sqi.net/img/general/',
+       'suffix': '/12113441\_iOa6Uh-Xi8bhj2-gpzkkw8MKiAIs7RmOcz\_RM7m8ink.jpg',
+       'width': 540,
+       'height': 960,
+       'user': \{'id': '12113441',
+        'firstName': 'Kino',
+        'photo': \{'prefix': 'https://fastly.4sqi.net/img/user/',
+         'suffix': '/12113441-K5HTHFLU2MUCM0CM.jpg'\}\},
+       'visibility': 'public'\},
+      'followers': \{'count': 20\},
+      'listItems': \{'count': 273,
+       'items': [\{'id': 'v4fa862b3e4b0ebff2f749f06',
+         'createdAt': 1373909433\}]\}\},
+     \{'id': '4fddeff0e4b0e078037ac0d3',
+      'name': 'NYC Resturants',
+      'description': '',
+      'type': 'others',
+      'user': \{'id': '21563126',
+       'firstName': 'Richard',
+       'lastName': 'R',
+       'photo': \{'prefix': 'https://fastly.4sqi.net/img/user/',
+        'suffix': '/21563126\_v05J1KPw\_SVj6Ehq9g8B9jeAGjFUMsU5QGl-
+NZ8inUQ7pKQm5bKplW37EmR7jS2A7GYPBBAtl.jpg'\}\},
+      'editable': False,
+      'public': True,
+      'collaborative': True,
+      'url': '/rickr7/list/nyc-resturants',
+      'canonicalUrl': 'https://foursquare.com/rickr7/list/nyc-resturants',
+      'createdAt': 1339944944,
+      'updatedAt': 1591664261,
+      'photo': \{'id': '5072dd13e4b09145cdf782d1',
+       'createdAt': 1349704979,
+       'prefix': 'https://fastly.4sqi.net/img/general/',
+       'suffix': '/208205\_fGh2OuAZ9qJ4agbAA5wMVNOSIm9kNUlRtNwj1N-adqg.jpg',
+       'width': 800,
+       'height': 800,
+       'user': \{'id': '208205',
+        'firstName': 'Thalia',
+        'lastName': 'K',
+        'photo': \{'prefix': 'https://fastly.4sqi.net/img/user/',
+         'suffix': '/SNOOLCAW2AG04ZKD.jpg'\}\},
+       'visibility': 'public'\},
+      'followers': \{'count': 12\},
+      'listItems': \{'count': 193,
+       'items': [\{'id': 'v4fa862b3e4b0ebff2f749f06',
+         'createdAt': 1581655865\}]\}\},
+     \{'id': '5266c68a498e7c667807fe09',
+      'name': 'Foodie Love in NY - 02',
+      'description': '',
+      'type': 'others',
+      'user': \{'id': '547977',
+       'firstName': 'WiLL',
+       'photo': \{'prefix': 'https://fastly.4sqi.net/img/user/',
+        'suffix': '/-Q5NYGDMFDMOITQRR.jpg'\}\},
+      'editable': False,
+      'public': True,
+      'collaborative': False,
+      'url': '/sweetiewill/list/foodie-love-in-ny--02',
+      'canonicalUrl': 'https://foursquare.com/sweetiewill/list/foodie-love-in-ny
+--02',
+      'createdAt': 1382467210,
+      'updatedAt': 1391995585,
+      'followers': \{'count': 7\},
+      'listItems': \{'count': 200,
+       'items': [\{'id': 'v4fa862b3e4b0ebff2f749f06',
+         'createdAt': 1386809936\}]\}\}]\}]\},
+ 'hours': \{'status': 'Closed until 11:30 AM',
+  'richStatus': \{'entities': [], 'text': 'Closed until 11:30 AM'\},
+  'isOpen': False,
+  'isLocalHoliday': False,
+  'dayData': [],
+  'timeframes': [\{'days': 'Mon–Wed, Sun',
+    'includesToday': True,
+    'open': [\{'renderedTime': '11:30 AM–11:00 PM'\}],
+    'segments': []\},
+   \{'days': 'Thu–Sat',
+    'open': [\{'renderedTime': '11:30 AM–Midnight'\}],
+    'segments': []\}]\},
+ 'popular': \{'isOpen': False,
+  'isLocalHoliday': False,
+  'timeframes': [\{'days': 'Today',
+    'includesToday': True,
+    'open': [\{'renderedTime': 'Noon–2:00 PM'\},
+     \{'renderedTime': '6:00 PM–8:00 PM'\}],
+    'segments': []\},
+   \{'days': 'Tue–Thu',
+    'open': [\{'renderedTime': 'Noon–2:00 PM'\},
+     \{'renderedTime': '5:00 PM–10:00 PM'\}],
+    'segments': []\},
+   \{'days': 'Fri',
+    'open': [\{'renderedTime': 'Noon–3:00 PM'\},
+     \{'renderedTime': '5:00 PM–11:00 PM'\}],
+    'segments': []\},
+   \{'days': 'Sat',
+    'open': [\{'renderedTime': 'Noon–11:00 PM'\}],
+    'segments': []\},
+   \{'days': 'Sun',
+    'open': [\{'renderedTime': 'Noon–3:00 PM'\},
+     \{'renderedTime': '5:00 PM–8:00 PM'\}],
+    'segments': []\}]\},
+ 'seasonalHours': [],
+ 'defaultHours': \{'status': 'Closed until 11:30 AM',
+  'richStatus': \{'entities': [], 'text': 'Closed until 11:30 AM'\},
+  'isOpen': False,
+  'isLocalHoliday': False,
+  'dayData': [],
+  'timeframes': [\{'days': 'Mon–Wed, Sun',
+    'includesToday': True,
+    'open': [\{'renderedTime': '11:30 AM–11:00 PM'\}],
+    'segments': []\},
+   \{'days': 'Thu–Sat',
+    'open': [\{'renderedTime': '11:30 AM–Midnight'\}],
+    'segments': []\}]\},
+ 'pageUpdates': \{'count': 0, 'items': []\},
+ 'inbox': \{'count': 0, 'items': []\},
+ 'attributes': \{'groups': [\{'type': 'price',
+    'name': 'Price',
+    'summary': '\$\$',
+    'count': 1,
+    'items': [\{'displayName': 'Price', 'displayValue': '\$\$', 'priceTier': 2\}]\},
+   \{'type': 'payments',
+    'name': 'Credit Cards',
+    'summary': 'Credit Cards',
+    'count': 7,
+    'items': [\{'displayName': 'Credit Cards',
+      'displayValue': 'Yes (incl. American Express)'\}]\},
+   \{'type': 'outdoorSeating',
+    'name': 'Outdoor Seating',
+    'summary': 'Outdoor Seating',
+    'count': 1,
+    'items': [\{'displayName': 'Outdoor Seating', 'displayValue': 'Yes'\}]\},
+   \{'type': 'serves',
+    'name': 'Menus',
+    'summary': 'Happy Hour, Brunch \& more',
+    'count': 8,
+    'items': [\{'displayName': 'Brunch', 'displayValue': 'Brunch'\},
+     \{'displayName': 'Lunch', 'displayValue': 'Lunch'\},
+     \{'displayName': 'Dinner', 'displayValue': 'Dinner'\},
+     \{'displayName': 'Happy Hour', 'displayValue': 'Happy Hour'\}]\},
+   \{'type': 'drinks',
+    'name': 'Drinks',
+    'summary': 'Beer, Wine \& Cocktails',
+    'count': 5,
+    'items': [\{'displayName': 'Beer', 'displayValue': 'Beer'\},
+     \{'displayName': 'Wine', 'displayValue': 'Wine'\},
+     \{'displayName': 'Cocktails', 'displayValue': 'Cocktails'\}]\}]\},
+ 'bestPhoto': \{'id': '4fad980de4b091b4626c3633',
+  'createdAt': 1336776717,
+  'source': \{'name': 'Foursquare for Android',
+   'url': 'https://foursquare.com/download/\#/android'\},
+  'prefix': 'https://fastly.4sqi.net/img/general/',
+  'suffix': '/ya1iQFI7pLjuIJp1PGDKlrZS3OJdHCF7tpILMmjv\_2w.jpg',
+  'width': 480,
+  'height': 640,
+  'visibility': 'public'\},
+ 'colors': \{'highlightColor': \{'photoId': '4fad980de4b091b4626c3633',
+   'value': -13619152\},
+  'highlightTextColor': \{'photoId': '4fad980de4b091b4626c3633', 'value': -1\},
+  'algoVersion': 3\}\}
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \hypertarget{b.-get-the-venues-overall-rating}{%
+\subsubsection{B. Get the venue's overall
+rating}\label{b.-get-the-venues-overall-rating}}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{18}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k}{try}\PY{p}{:}
+    \PY{n+nb}{print}\PY{p}{(}\PY{n}{result}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{response}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{venue}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{rating}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{)}
+\PY{k}{except}\PY{p}{:}
+    \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{This venue has not been rated yet.}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+6.9
+    \end{Verbatim}
+
+    That is not a very good rating. Let's check the rating of the second
+closest Italian restaurant.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{19}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{venue\PYZus{}id} \PY{o}{=} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{4f3232e219836c91c7bfde94}\PY{l+s+s1}{\PYZsq{}} \PY{c+c1}{\PYZsh{} ID of Conca Cucina Italian Restaurant}
+\PY{n}{url} \PY{o}{=} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{https://api.foursquare.com/v2/venues/}\PY{l+s+si}{\PYZob{}\PYZcb{}}\PY{l+s+s1}{?client\PYZus{}id=}\PY{l+s+si}{\PYZob{}\PYZcb{}}\PY{l+s+s1}{\PYZam{}client\PYZus{}secret=}\PY{l+s+si}{\PYZob{}\PYZcb{}}\PY{l+s+s1}{\PYZam{}v=}\PY{l+s+si}{\PYZob{}\PYZcb{}}\PY{l+s+s1}{\PYZsq{}}\PY{o}{.}\PY{n}{format}\PY{p}{(}\PY{n}{venue\PYZus{}id}\PY{p}{,} \PY{n}{CLIENT\PYZus{}ID}\PY{p}{,} \PY{n}{CLIENT\PYZus{}SECRET}\PY{p}{,} \PY{n}{VERSION}\PY{p}{)}
+
+\PY{n}{result} \PY{o}{=} \PY{n}{requests}\PY{o}{.}\PY{n}{get}\PY{p}{(}\PY{n}{url}\PY{p}{)}\PY{o}{.}\PY{n}{json}\PY{p}{(}\PY{p}{)}
+\PY{k}{try}\PY{p}{:}
+    \PY{n+nb}{print}\PY{p}{(}\PY{n}{result}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{response}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{venue}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{rating}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{)}
+\PY{k}{except}\PY{p}{:}
+    \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{This venue has not been rated yet.}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+This venue has not been rated yet.
+    \end{Verbatim}
+
+    Since this restaurant has no ratings, let's check the third restaurant.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{22}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{venue\PYZus{}id} \PY{o}{=} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{3fd66200f964a520f4e41ee3}\PY{l+s+s1}{\PYZsq{}} \PY{c+c1}{\PYZsh{} ID of Ecco}
+\PY{n}{url} \PY{o}{=} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{https://api.foursquare.com/v2/venues/}\PY{l+s+si}{\PYZob{}\PYZcb{}}\PY{l+s+s1}{?client\PYZus{}id=}\PY{l+s+si}{\PYZob{}\PYZcb{}}\PY{l+s+s1}{\PYZam{}client\PYZus{}secret=}\PY{l+s+si}{\PYZob{}\PYZcb{}}\PY{l+s+s1}{\PYZam{}v=}\PY{l+s+si}{\PYZob{}\PYZcb{}}\PY{l+s+s1}{\PYZsq{}}\PY{o}{.}\PY{n}{format}\PY{p}{(}\PY{n}{venue\PYZus{}id}\PY{p}{,} \PY{n}{CLIENT\PYZus{}ID}\PY{p}{,} \PY{n}{CLIENT\PYZus{}SECRET}\PY{p}{,} \PY{n}{VERSION}\PY{p}{)}
+
+\PY{n}{result} \PY{o}{=} \PY{n}{requests}\PY{o}{.}\PY{n}{get}\PY{p}{(}\PY{n}{url}\PY{p}{)}\PY{o}{.}\PY{n}{json}\PY{p}{(}\PY{p}{)}
+\PY{k}{try}\PY{p}{:}
+    \PY{n+nb}{print}\PY{p}{(}\PY{n}{result}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{response}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{venue}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{rating}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{)}
+\PY{k}{except}\PY{p}{:}
+    \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{This venue has not been rated yet.}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+7.3
+    \end{Verbatim}
+
+    Since this restaurant has a slightly better rating, let's explore it
+further.
+
+    \hypertarget{c.-get-the-number-of-tips}{%
+\subsubsection{C. Get the number of
+tips}\label{c.-get-the-number-of-tips}}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{23}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{result}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{response}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{venue}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{tips}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{count}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{23}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+19
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \hypertarget{d.-get-the-venues-tips}{%
+\subsubsection{D. Get the venue's tips}\label{d.-get-the-venues-tips}}
+
+\begin{quote}
+\texttt{https://api.foursquare.com/v2/venues/}\textbf{VENUE\_ID}\texttt{/tips?client\_id=}\textbf{CLIENT\_ID}\texttt{\&client\_secret=}\textbf{CLIENT\_SECRET}\texttt{\&v=}\textbf{VERSION}\texttt{\&limit=}\textbf{LIMIT}
+\end{quote}
+
+    \hypertarget{create-url-and-send-get-request.-make-sure-to-set-limit-to-get-all-tips}{%
+\paragraph{Create URL and send GET request. Make sure to set limit to
+get all
+tips}\label{create-url-and-send-get-request.-make-sure-to-set-limit-to-get-all-tips}}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{24}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{}\PYZsh{} Ecco Tips}
+\PY{n}{limit} \PY{o}{=} \PY{l+m+mi}{15} \PY{c+c1}{\PYZsh{} set limit to be greater than or equal to the total number of tips}
+\PY{n}{url} \PY{o}{=} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{https://api.foursquare.com/v2/venues/}\PY{l+s+si}{\PYZob{}\PYZcb{}}\PY{l+s+s1}{/tips?client\PYZus{}id=}\PY{l+s+si}{\PYZob{}\PYZcb{}}\PY{l+s+s1}{\PYZam{}client\PYZus{}secret=}\PY{l+s+si}{\PYZob{}\PYZcb{}}\PY{l+s+s1}{\PYZam{}v=}\PY{l+s+si}{\PYZob{}\PYZcb{}}\PY{l+s+s1}{\PYZam{}limit=}\PY{l+s+si}{\PYZob{}\PYZcb{}}\PY{l+s+s1}{\PYZsq{}}\PY{o}{.}\PY{n}{format}\PY{p}{(}\PY{n}{venue\PYZus{}id}\PY{p}{,} \PY{n}{CLIENT\PYZus{}ID}\PY{p}{,} \PY{n}{CLIENT\PYZus{}SECRET}\PY{p}{,} \PY{n}{VERSION}\PY{p}{,} \PY{n}{limit}\PY{p}{)}
+
+\PY{n}{results} \PY{o}{=} \PY{n}{requests}\PY{o}{.}\PY{n}{get}\PY{p}{(}\PY{n}{url}\PY{p}{)}\PY{o}{.}\PY{n}{json}\PY{p}{(}\PY{p}{)}
+\PY{n}{results}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{24}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\{'meta': \{'code': 200, 'requestId': '5f1ec660241e64486cdd76db'\},
+ 'response': \{'tips': \{'count': 19,
+   'items': [\{'id': '5ab1cb46c9a517174651d3fe',
+     'createdAt': 1521601350,
+     'text': 'A+ Italian food! Trust me on this: my mom’s side of the family is
+100\% Italian. I was born and bred to know good pasta when I see it, and Ecco is
+one of my all-time NYC favorites',
+     'type': 'user',
+     'canonicalUrl': 'https://foursquare.com/item/5ab1cb46c9a517174651d3fe',
+     'lang': 'en',
+     'likes': \{'count': 0, 'groups': []\},
+     'logView': True,
+     'agreeCount': 4,
+     'disagreeCount': 0,
+     'todo': \{'count': 0\},
+     'user': \{'id': '484542633',
+      'firstName': 'Nick',
+      'lastName': 'E',
+      'photo': \{'prefix': 'https://fastly.4sqi.net/img/user/',
+       'suffix': '/484542633\_unymNUmw\_FdPs3GjXHujmHcYnN4hf8kEPADlOZuIrdcdm97VX3t
+FqL7fFNMNA\_8Gl9NlU1GYg.jpg'\}\},
+     'authorInteractionType': 'liked'\}]\}\}\}
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \hypertarget{get-tips-and-list-of-associated-features}{%
+\paragraph{Get tips and list of associated
+features}\label{get-tips-and-list-of-associated-features}}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{25}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{tips} \PY{o}{=} \PY{n}{results}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{response}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{tips}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{items}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}
+
+\PY{n}{tip} \PY{o}{=} \PY{n}{results}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{response}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{tips}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{items}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}
+\PY{n}{tip}\PY{o}{.}\PY{n}{keys}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{25}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+dict\_keys(['id', 'createdAt', 'text', 'type', 'canonicalUrl', 'lang', 'likes',
+'logView', 'agreeCount', 'disagreeCount', 'todo', 'user',
+'authorInteractionType'])
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \hypertarget{format-column-width-and-display-all-tips}{%
+\paragraph{Format column width and display all
+tips}\label{format-column-width-and-display-all-tips}}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{30}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{}pd.set\PYZus{}option(\PYZsq{}display.max\PYZus{}colwidth\PYZsq{}, \PYZhy{}1)}
+\PY{n}{pd}\PY{o}{.}\PY{n}{set\PYZus{}option}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{display.max\PYZus{}colwidth}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{k+kc}{None}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} tips\PYZus{}df = json\PYZus{}normalize(tips) \PYZsh{} json normalize tips}
+\PY{n}{tips\PYZus{}df} \PY{o}{=} \PY{n}{pd}\PY{o}{.}\PY{n}{json\PYZus{}normalize}\PY{p}{(}\PY{n}{tips}\PY{p}{)} \PY{c+c1}{\PYZsh{} json normalize tips}
+
+\PY{c+c1}{\PYZsh{} columns to keep}
+\PY{n}{filtered\PYZus{}columns} \PY{o}{=} \PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{text}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{agreeCount}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{disagreeCount}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{id}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{user.firstName}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{user.lastName}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{user.gender}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{user.id}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}
+\PY{c+c1}{\PYZsh{}print(filtered\PYZus{}columns)}
+\PY{c+c1}{\PYZsh{}tips\PYZus{}filtered = tips\PYZus{}df.loc[:, filtered\PYZus{}columns]}
+\PY{n}{tips\PYZus{}filtered} \PY{o}{=} \PY{n}{tips\PYZus{}df}\PY{o}{.}\PY{n}{reindex}\PY{p}{(}\PY{n}{columns}\PY{o}{=}\PY{n}{filtered\PYZus{}columns}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} display tips}
+\PY{n}{tips\PYZus{}filtered}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{30}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+                 text  \textbackslash{}
+0  A+ Italian food! Trust me on this: my mom’s side of the family is 100\%
+Italian. I was born and bred to know good pasta when I see it, and Ecco is one
+of my all-time NYC favorites
+
+   agreeCount  disagreeCount                        id user.firstName  \textbackslash{}
+0           4              0  5ab1cb46c9a517174651d3fe           Nick
+
+  user.lastName  user.gender    user.id
+0             E          NaN  484542633
+\end{Verbatim}
+\end{tcolorbox}
+        
+    Now remember that because we are using a personal developer account,
+then we can access only 2 of the restaurant's tips, instead of all 15
+tips.
+
+    
+
+    
+
+    \hypertarget{search-a-foursquare-user}{%
+\subsection{3. Search a Foursquare
+User}\label{search-a-foursquare-user}}
+
+\begin{quote}
+\texttt{https://api.foursquare.com/v2/users/}\textbf{USER\_ID}\texttt{?client\_id=}\textbf{CLIENT\_ID}\texttt{\&client\_secret=}\textbf{CLIENT\_SECRET}\texttt{\&v=}\textbf{VERSION}
+\end{quote}
+
+    \hypertarget{define-url-send-get-request-and-display-features-associated-with-user}{%
+\subsubsection{Define URL, send GET request and display features
+associated with
+user}\label{define-url-send-get-request-and-display-features-associated-with-user}}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{54}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{user\PYZus{}id} \PY{o}{=} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{484542633}\PY{l+s+s1}{\PYZsq{}} \PY{c+c1}{\PYZsh{} user ID with most agree counts and complete profile}
+
+\PY{n}{url} \PY{o}{=} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{https://api.foursquare.com/v2/users/}\PY{l+s+si}{\PYZob{}\PYZcb{}}\PY{l+s+s1}{?client\PYZus{}id=}\PY{l+s+si}{\PYZob{}\PYZcb{}}\PY{l+s+s1}{\PYZam{}client\PYZus{}secret=}\PY{l+s+si}{\PYZob{}\PYZcb{}}\PY{l+s+s1}{\PYZam{}v=}\PY{l+s+si}{\PYZob{}\PYZcb{}}\PY{l+s+s1}{\PYZsq{}}\PY{o}{.}\PY{n}{format}\PY{p}{(}\PY{n}{user\PYZus{}id}\PY{p}{,} \PY{n}{CLIENT\PYZus{}ID}\PY{p}{,} \PY{n}{CLIENT\PYZus{}SECRET}\PY{p}{,} \PY{n}{VERSION}\PY{p}{)} \PY{c+c1}{\PYZsh{} define URL}
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{url}\PY{p}{)}
+\PY{c+c1}{\PYZsh{} send GET request}
+\PY{n}{results} \PY{o}{=} \PY{n}{requests}\PY{o}{.}\PY{n}{get}\PY{p}{(}\PY{n}{url}\PY{p}{)}\PY{o}{.}\PY{n}{json}\PY{p}{(}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{results}\PY{p}{)}
+\PY{n}{user\PYZus{}data} \PY{o}{=} \PY{n}{results}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{response}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{user}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}
+
+\PY{c+c1}{\PYZsh{} display features associated with user}
+\PY{n}{user\PYZus{}data}\PY{o}{.}\PY{n}{keys}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+https://api.foursquare.com/v2/users/484542633?client\_id=1D4LUFF5Y0G2E2M52RW2QRFJ
+LDT5CJH1QJUN0ANQLIJJCPU3\&client\_secret=05X3YLFANXLSHZ0J3RLUWTY3QGZ0D2ZCJQGSQDU5Q
+BCCUEKL\&v=20180604
+\{'meta': \{'code': 401, 'errorType': 'invalid\_auth', 'errorDetail': 'Missing
+oauth\_token. See
+https://developer.foursquare.com/docs/api/configuration/authentication for
+details.', 'requestId': '5f1ecb4fcbd37754cca73bbd'\}, 'response': \{\}\}
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+
+        ---------------------------------------------------------------------------
+
+        KeyError                                  Traceback (most recent call last)
+
+        <ipython-input-54-122bc403f5c5> in <module>
+          6 results = requests.get(url).json()
+          7 print(results)
+    ----> 8 user\_data = results['response']['user']
+          9 
+         10 \# display features associated with user
+
+
+        KeyError: 'user'
+
+    \end{Verbatim}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{ }{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{First Name: }\PY{l+s+s1}{\PYZsq{}} \PY{o}{+} \PY{n}{user\PYZus{}data}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{firstName}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Last Name: }\PY{l+s+s1}{\PYZsq{}} \PY{o}{+} \PY{n}{user\PYZus{}data}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{lastName}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Home City: }\PY{l+s+s1}{\PYZsq{}} \PY{o}{+} \PY{n}{user\PYZus{}data}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{homeCity}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \hypertarget{how-many-tips-has-this-user-submitted}{%
+\paragraph{How many tips has this user
+submitted?}\label{how-many-tips-has-this-user-submitted}}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{ }{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{user\PYZus{}data}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{tips}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}
+\end{Verbatim}
+\end{tcolorbox}
+
+    Wow! So it turns out that Nick is a very active Foursquare user, with
+more than 250 tips.
+
+    \hypertarget{get-users-tips}{%
+\subsubsection{Get User's tips}\label{get-users-tips}}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{37}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} define tips URL}
+\PY{n}{url} \PY{o}{=} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{https://api.foursquare.com/v2/users/}\PY{l+s+si}{\PYZob{}\PYZcb{}}\PY{l+s+s1}{/tips?client\PYZus{}id=}\PY{l+s+si}{\PYZob{}\PYZcb{}}\PY{l+s+s1}{\PYZam{}client\PYZus{}secret=}\PY{l+s+si}{\PYZob{}\PYZcb{}}\PY{l+s+s1}{\PYZam{}v=}\PY{l+s+si}{\PYZob{}\PYZcb{}}\PY{l+s+s1}{\PYZam{}limit=}\PY{l+s+si}{\PYZob{}\PYZcb{}}\PY{l+s+s1}{\PYZsq{}}\PY{o}{.}\PY{n}{format}\PY{p}{(}\PY{n}{user\PYZus{}id}\PY{p}{,} \PY{n}{CLIENT\PYZus{}ID}\PY{p}{,} \PY{n}{CLIENT\PYZus{}SECRET}\PY{p}{,} \PY{n}{VERSION}\PY{p}{,} \PY{n}{limit}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} send GET request and get user\PYZsq{}s tips}
+\PY{n}{results} \PY{o}{=} \PY{n}{requests}\PY{o}{.}\PY{n}{get}\PY{p}{(}\PY{n}{url}\PY{p}{)}\PY{o}{.}\PY{n}{json}\PY{p}{(}\PY{p}{)}
+\PY{n}{tips} \PY{o}{=} \PY{n}{results}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{response}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{tips}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{items}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}
+
+\PY{c+c1}{\PYZsh{} format column width}
+\PY{c+c1}{\PYZsh{}pd.set\PYZus{}option(\PYZsq{}display.max\PYZus{}colwidth\PYZsq{}, \PYZhy{}1)}
+\PY{n}{pd}\PY{o}{.}\PY{n}{set\PYZus{}option}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{display.max\PYZus{}colwidth}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{k+kc}{None}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} tips\PYZus{}df = json\PYZus{}normalize(tips)}
+\PY{n}{tips\PYZus{}df} \PY{o}{=} \PY{n}{pd}\PY{o}{.}\PY{n}{json\PYZus{}normalize}\PY{p}{(}\PY{n}{tips}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} filter columns}
+\PY{n}{filtered\PYZus{}columns} \PY{o}{=} \PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{text}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{agreeCount}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{disagreeCount}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{id}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}
+\PY{c+c1}{\PYZsh{}tips\PYZus{}filtered = tips\PYZus{}df.loc[:, filtered\PYZus{}columns]}
+\PY{n}{tips\PYZus{}filtered} \PY{o}{=} \PY{n}{tips\PYZus{}df}\PY{o}{.}\PY{n}{reindex}\PY{p}{(}\PY{n}{columns}\PY{o}{=}\PY{n}{filtered\PYZus{}columns}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} display user\PYZsq{}s tips}
+\PY{n}{tips\PYZus{}filtered}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{37}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+                               text  \textbackslash{}
+0
+They serve coffee!!!!!!
+1
+Quick, cheap lunch that tastes good! Way shorter line than Chipotle, too.
+2
+You’re not a real New Yorker until you’ve shame-ordered Insomnia Cookies for
+delivery at 3am
+3
+Good for you yet still tasty! Clean green protein is my go-to after I hit the
+gym 💪
+4
+Burger game strong 💪
+5                                                                Great burgers \&
+fries! Also, this place is exactly what it’s like when you go to a bar in the
+Southwest. Source: I’m from Arizona.
+6
+Açaí bowl + peanut butter + whey protein = 💪💪💪
+7
+Highly underrated and way less crowded than Central Park!
+8   Way easier to navigate than the Met proper, plus the Met Breuer focuses on
+modern art. If I only have a limited amount of time to spend in a museum, I
+would rather go here than anywhere else!
+9
+Get the açaí bowl with peanut butter after your work out and thank me later 👌
+10
+When you want a burger, this should be the first thing that comes to mind. A+!
+11
+Way less crowded than Central Park! People who live in the neighborhood rave
+about Carl Schurz Park.
+12
+The best Mexican food in the Murray Hill / Kips Bay area!
+13
+Best coffee shop in the neighborhood!
+14                                                                When there’s
+nice weather, the rooftop at Tonic East is the best place to watch the game.
+Perfect for March Madness \& NBA finals!
+
+    agreeCount  disagreeCount                        id
+0            1              0  5accc98c0313204c9d7ec157
+1            2              0  5acbec70a0215b732e264fe8
+2            1              0  5acbbd4eb1538e45373b07f5
+3            2              0  5acbbcda01235808d5d6dc75
+4            1              0  5ab575fb6bdee65f759da8c1
+5            2              0  5ab5575d73fe2516ad8f363b
+6            1              0  5ab42db53c858d64af2688a4
+7            3              0  5ab42c396f706a29f53ad1a8
+8            6              0  5ab42b987dc9e17930e5ff5b
+9            1              0  5ab42aca2a7ab6333652b266
+10           1              0  5ab42a28da5e5617d18e3a6a
+11           3              0  5ab429db1ffe971b060083f5
+12           1              0  5ab3f53f8496ca57542d5549
+13           1              0  5ab3f428da5e5617d17d1475
+14           2              0  5ab3f3fedd70c572de886c9d
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \hypertarget{lets-get-the-venue-for-the-tip-with-the-greatest-number-of-agree-counts}{%
+\paragraph{Let's get the venue for the tip with the greatest number of
+agree
+counts}\label{lets-get-the-venue-for-the-tip-with-the-greatest-number-of-agree-counts}}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{38}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{tip\PYZus{}id} \PY{o}{=} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{5ab5575d73fe2516ad8f363b}\PY{l+s+s1}{\PYZsq{}} \PY{c+c1}{\PYZsh{} tip id}
+
+\PY{c+c1}{\PYZsh{} define URL}
+\PY{n}{url} \PY{o}{=} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{http://api.foursquare.com/v2/tips/}\PY{l+s+si}{\PYZob{}\PYZcb{}}\PY{l+s+s1}{?client\PYZus{}id=}\PY{l+s+si}{\PYZob{}\PYZcb{}}\PY{l+s+s1}{\PYZam{}client\PYZus{}secret=}\PY{l+s+si}{\PYZob{}\PYZcb{}}\PY{l+s+s1}{\PYZam{}v=}\PY{l+s+si}{\PYZob{}\PYZcb{}}\PY{l+s+s1}{\PYZsq{}}\PY{o}{.}\PY{n}{format}\PY{p}{(}\PY{n}{tip\PYZus{}id}\PY{p}{,} \PY{n}{CLIENT\PYZus{}ID}\PY{p}{,} \PY{n}{CLIENT\PYZus{}SECRET}\PY{p}{,} \PY{n}{VERSION}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} send GET Request and examine results}
+\PY{n}{result} \PY{o}{=} \PY{n}{requests}\PY{o}{.}\PY{n}{get}\PY{p}{(}\PY{n}{url}\PY{p}{)}\PY{o}{.}\PY{n}{json}\PY{p}{(}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{result}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{response}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{tip}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{venue}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{name}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{result}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{response}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{tip}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{venue}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{location}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+Cowgirl
+\{'address': '519 Hudson St', 'crossStreet': 'at W 10th St', 'lat':
+40.73373338282062, 'lng': -74.0062998849649, 'labeledLatLngs': [\{'label':
+'display', 'lat': 40.73373338282062, 'lng': -74.0062998849649\}], 'postalCode':
+'10014', 'cc': 'US', 'city': 'New York', 'state': 'NY', 'country': 'United
+States', 'formattedAddress': ['519 Hudson St (at W 10th St)', 'New York, NY
+10014', 'United States']\}
+    \end{Verbatim}
+
+    \hypertarget{get-users-friends}{%
+\subsubsection{Get User's friends}\label{get-users-friends}}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{39}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} user\PYZus{}friends = json\PYZus{}normalize(user\PYZus{}data[\PYZsq{}friends\PYZsq{}][\PYZsq{}groups\PYZsq{}][0][\PYZsq{}items\PYZsq{}])}
+\PY{n}{user\PYZus{}friends} \PY{o}{=} \PY{n}{pd}\PY{o}{.}\PY{n}{json\PYZus{}normalize}\PY{p}{(}\PY{n}{user\PYZus{}data}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{friends}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{groups}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{items}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{)}
+\PY{n}{user\PYZus{}friends}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+
+        ---------------------------------------------------------------------------
+
+        NameError                                 Traceback (most recent call last)
+
+        <ipython-input-39-bcc27b1bf8b4> in <module>
+    ----> 1 user\_friends = json\_normalize(user\_data['friends']['groups'][0]['items'])
+          2 user\_friends
+
+
+        NameError: name 'user\_data' is not defined
+
+    \end{Verbatim}
+
+    Interesting. Despite being very active, it turns out that Nick does not
+have any friends on Foursquare. This might definitely change in the
+future.
+
+    \hypertarget{retrieve-the-users-profile-image}{%
+\subsubsection{Retrieve the User's Profile
+Image}\label{retrieve-the-users-profile-image}}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{ }{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{user\PYZus{}data}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{ }{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} 1. grab prefix of photo}
+\PY{c+c1}{\PYZsh{} 2. grab suffix of photo}
+\PY{c+c1}{\PYZsh{} 3. concatenate them using the image size  }
+\PY{n}{Image}\PY{p}{(}\PY{n}{url}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{https://igx.4sqi.net/img/user/300x300/484542633\PYZus{}mK2Yum7T\PYZus{}7Tn9fWpndidJsmw2Hof\PYZus{}6T5vJBKCHPLMK5OL\PYZhy{}U5ZiJGj51iwBstcpDLYa3Zvhvis.jpg}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    
+
+    
+
+    \hypertarget{explore-a-location}{%
+\subsection{4. Explore a location}\label{explore-a-location}}
+
+\begin{quote}
+\texttt{https://api.foursquare.com/v2/venues/}\textbf{explore}\texttt{?client\_id=}\textbf{CLIENT\_ID}\texttt{\&client\_secret=}\textbf{CLIENT\_SECRET}\texttt{\&ll=}\textbf{LATITUDE}\texttt{,}\textbf{LONGITUDE}\texttt{\&v=}\textbf{VERSION}\texttt{\&limit=}\textbf{LIMIT}
+\end{quote}
+
+    \hypertarget{so-you-just-finished-your-gourmet-dish-at-ecco-and-are-just-curious-about-the-popular-spots-around-the-restaurant.-in-order-to-explore-the-area-lets-start-by-getting-the-latitude-and-longitude-values-of-ecco-restaurant.}{%
+\paragraph{So, you just finished your gourmet dish at Ecco, and are just
+curious about the popular spots around the restaurant. In order to
+explore the area, let's start by getting the latitude and longitude
+values of Ecco
+Restaurant.}\label{so-you-just-finished-your-gourmet-dish-at-ecco-and-are-just-curious-about-the-popular-spots-around-the-restaurant.-in-order-to-explore-the-area-lets-start-by-getting-the-latitude-and-longitude-values-of-ecco-restaurant.}}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{40}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{latitude} \PY{o}{=} \PY{l+m+mf}{40.715337}
+\PY{n}{longitude} \PY{o}{=} \PY{o}{\PYZhy{}}\PY{l+m+mf}{74.008848}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \hypertarget{define-url}{%
+\paragraph{Define URL}\label{define-url}}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{41}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{url} \PY{o}{=} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{https://api.foursquare.com/v2/venues/explore?client\PYZus{}id=}\PY{l+s+si}{\PYZob{}\PYZcb{}}\PY{l+s+s1}{\PYZam{}client\PYZus{}secret=}\PY{l+s+si}{\PYZob{}\PYZcb{}}\PY{l+s+s1}{\PYZam{}ll=}\PY{l+s+si}{\PYZob{}\PYZcb{}}\PY{l+s+s1}{,}\PY{l+s+si}{\PYZob{}\PYZcb{}}\PY{l+s+s1}{\PYZam{}v=}\PY{l+s+si}{\PYZob{}\PYZcb{}}\PY{l+s+s1}{\PYZam{}radius=}\PY{l+s+si}{\PYZob{}\PYZcb{}}\PY{l+s+s1}{\PYZam{}limit=}\PY{l+s+si}{\PYZob{}\PYZcb{}}\PY{l+s+s1}{\PYZsq{}}\PY{o}{.}\PY{n}{format}\PY{p}{(}\PY{n}{CLIENT\PYZus{}ID}\PY{p}{,} \PY{n}{CLIENT\PYZus{}SECRET}\PY{p}{,} \PY{n}{latitude}\PY{p}{,} \PY{n}{longitude}\PY{p}{,} \PY{n}{VERSION}\PY{p}{,} \PY{n}{radius}\PY{p}{,} \PY{n}{LIMIT}\PY{p}{)}
+\PY{n}{url}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{41}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+'https://api.foursquare.com/v2/venues/explore?client\_id=1D4LUFF5Y0G2E2M52RW2QRFJ
+LDT5CJH1QJUN0ANQLIJJCPU3\&client\_secret=05X3YLFANXLSHZ0J3RLUWTY3QGZ0D2ZCJQGSQDU5Q
+BCCUEKL\&ll=40.715337,-74.008848\&v=20180604\&radius=500\&limit=30'
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \hypertarget{send-get-request-and-examine-results}{%
+\paragraph{Send GET request and examine
+results}\label{send-get-request-and-examine-results}}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{42}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k+kn}{import} \PY{n+nn}{requests}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{43}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{results} \PY{o}{=} \PY{n}{requests}\PY{o}{.}\PY{n}{get}\PY{p}{(}\PY{n}{url}\PY{p}{)}\PY{o}{.}\PY{n}{json}\PY{p}{(}\PY{p}{)}
+\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{There are }\PY{l+s+si}{\PYZob{}\PYZcb{}}\PY{l+s+s1}{ around Ecco restaurant.}\PY{l+s+s1}{\PYZsq{}}\PY{o}{.}\PY{n}{format}\PY{p}{(}\PY{n+nb}{len}\PY{p}{(}\PY{n}{results}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{response}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{groups}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{items}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{)}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{43}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+'There are 30 around Ecco restaurant.'
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \hypertarget{get-relevant-part-of-json}{%
+\paragraph{Get relevant part of JSON}\label{get-relevant-part-of-json}}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{44}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{items} \PY{o}{=} \PY{n}{results}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{response}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{groups}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{items}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}
+\PY{n}{items}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{44}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\{'reasons': \{'count': 0,
+  'items': [\{'summary': 'This spot is popular',
+    'type': 'general',
+    'reasonName': 'globalInteractionReason'\}]\},
+ 'venue': \{'id': '5d5f24ec09484500079aee00',
+  'name': 'Los Tacos No. 1',
+  'location': \{'address': '136 Church St',
+   'lat': 40.714267,
+   'lng': -74.008756,
+   'labeledLatLngs': [\{'label': 'display',
+     'lat': 40.714267,
+     'lng': -74.008756\}],
+   'distance': 119,
+   'postalCode': '10007',
+   'cc': 'US',
+   'city': 'New York',
+   'state': 'NY',
+   'country': 'United States',
+   'formattedAddress': ['136 Church St',
+    'New York, NY 10007',
+    'United States']\},
+  'categories': [\{'id': '4bf58dd8d48988d151941735',
+    'name': 'Taco Place',
+    'pluralName': 'Taco Places',
+    'shortName': 'Tacos',
+    'icon': \{'prefix': 'https://ss3.4sqi.net/img/categories\_v2/food/taco\_',
+     'suffix': '.png'\},
+    'primary': True\}],
+  'delivery': \{'id': '2180700',
+   'url': 'https://www.seamless.com/menu/los-tacos-no-1-tribeca-136-church-st-
+new-york/2180700?affiliate=1131\&utm\_source=foursquare-affiliate-
+network\&utm\_medium=affiliate\&utm\_campaign=1131\&utm\_content=2180700',
+   'provider': \{'name': 'seamless',
+    'icon': \{'prefix': 'https://fastly.4sqi.net/img/general/cap/',
+     'sizes': [40, 50],
+     'name': '/delivery\_provider\_seamless\_20180129.png'\}\}\},
+  'photos': \{'count': 0, 'groups': []\}\},
+ 'referralId': 'e-0-5d5f24ec09484500079aee00-0'\}
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \hypertarget{process-json-and-convert-it-to-a-clean-dataframe}{%
+\paragraph{Process JSON and convert it to a clean
+dataframe}\label{process-json-and-convert-it-to-a-clean-dataframe}}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{47}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} dataframe = json\PYZus{}normalize(items) \PYZsh{} flatten JSON}
+\PY{n}{dataframe} \PY{o}{=} \PY{n}{pd}\PY{o}{.}\PY{n}{json\PYZus{}normalize}\PY{p}{(}\PY{n}{items}\PY{p}{)} \PY{c+c1}{\PYZsh{} flatten JSON}
+
+\PY{c+c1}{\PYZsh{} filter columns}
+\PY{n}{filtered\PYZus{}columns} \PY{o}{=} \PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{venue.name}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{venue.categories}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{+} \PY{p}{[}\PY{n}{col} \PY{k}{for} \PY{n}{col} \PY{o+ow}{in} \PY{n}{dataframe}\PY{o}{.}\PY{n}{columns} \PY{k}{if} \PY{n}{col}\PY{o}{.}\PY{n}{startswith}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{venue.location.}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}\PY{p}{]} \PY{o}{+} \PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{venue.id}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}
+\PY{c+c1}{\PYZsh{} dataframe\PYZus{}filtered = dataframe.loc[:, filtered\PYZus{}columns]}
+\PY{n}{dataframe\PYZus{}filtered} \PY{o}{=} \PY{n}{dataframe}\PY{o}{.}\PY{n}{reindex}\PY{p}{(}\PY{n}{columns}\PY{o}{=}\PY{n}{filtered\PYZus{}columns}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} filter the category for each row}
+\PY{n}{dataframe\PYZus{}filtered}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{venue.categories}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{=} \PY{n}{dataframe\PYZus{}filtered}\PY{o}{.}\PY{n}{apply}\PY{p}{(}\PY{n}{get\PYZus{}category\PYZus{}type}\PY{p}{,} \PY{n}{axis}\PY{o}{=}\PY{l+m+mi}{1}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} clean columns}
+\PY{n}{dataframe\PYZus{}filtered}\PY{o}{.}\PY{n}{columns} \PY{o}{=} \PY{p}{[}\PY{n}{col}\PY{o}{.}\PY{n}{split}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{.}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}\PY{p}{[}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{]} \PY{k}{for} \PY{n}{col} \PY{o+ow}{in} \PY{n}{dataframe\PYZus{}filtered}\PY{o}{.}\PY{n}{columns}\PY{p}{]}
+
+\PY{n}{dataframe\PYZus{}filtered}\PY{o}{.}\PY{n}{head}\PY{p}{(}\PY{l+m+mi}{10}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{47}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+                       name                     categories          address  \textbackslash{}
+0           Los Tacos No. 1                     Taco Place    136 Church St
+1                     Korin         Furniture / Home Store     57 Warren St
+2          Takahachi Bakery                         Bakery     25 Murray St
+3               Juice Press  Vegetarian / Vegan Restaurant     83 Murray St
+4                 Takahachi               Sushi Restaurant     145 Duane St
+5     Chambers Street Wines                      Wine Shop  148 Chambers St
+6                 Nish Nūsh             Falafel Restaurant      88 Reade St
+7  Restaurant Marc Forgione        New American Restaurant     134 Reade St
+8                Weather Up                   Cocktail Bar     159 Duane St
+9              Lekka Burger                   Burger Joint     81 Warren St
+
+         lat        lng  \textbackslash{}
+0  40.714267 -74.008756
+1  40.714824 -74.009404
+2  40.713653 -74.008804
+3  40.714788 -74.011132
+4  40.716526 -74.008101
+5  40.715773 -74.009718
+6  40.715537 -74.007725
+7  40.716380 -74.009629
+8  40.716741 -74.008666
+9  40.715246 -74.010559
+
+                                            labeledLatLngs  \textbackslash{}
+0
+[\{'label': 'display', 'lat': 40.714267, 'lng': -74.008756\}]
+1  [\{'label': 'display', 'lat': 40.71482437714839, 'lng': -74.00940425461492\},
+\{'label': 'entrance', 'lat': 40.714727, 'lng': -74.009399\}]
+2  [\{'label': 'display', 'lat': 40.713652845301894, 'lng': -74.0088038953017\},
+\{'label': 'entrance', 'lat': 40.713716, 'lng': -74.008443\}]
+3                                                               [\{'label':
+'display', 'lat': 40.71478769908051, 'lng': -74.0111317502157\}]
+4  [\{'label': 'display', 'lat': 40.71652647412374, 'lng': -74.00810108466207\},
+\{'label': 'entrance', 'lat': 40.716508, 'lng': -74.007989\}]
+5  [\{'label': 'display', 'lat': 40.715773063928374, 'lng': -74.00971823312332\},
+\{'label': 'entrance', 'lat': 40.715696, 'lng': -74.00988\}]
+6   [\{'label': 'display', 'lat': 40.71553710116416, 'lng': -74.00772452925565\},
+\{'label': 'entrance', 'lat': 40.715615, 'lng': -74.00773\}]
+7                                                              [\{'label':
+'display', 'lat': 40.71637984317071, 'lng': -74.00962933453428\}]
+8    [\{'label': 'display', 'lat': 40.71674084163369, 'lng': -74.0086664438893\},
+\{'label': 'entrance', 'lat': 40.71685, 'lng': -74.008729\}]
+9
+[\{'label': 'display', 'lat': 40.715246, 'lng': -74.010559\}]
+
+   distance postalCode  cc      city state        country  \textbackslash{}
+0       119      10007  US  New York    NY  United States
+1        73      10007  US  New York    NY  United States
+2       187      10007  US  New York    NY  United States
+3       202      10007  US  New York    NY  United States
+4       146      10013  US  New York    NY  United States
+5        88      10007  US  New York    NY  United States
+6        97      10013  US  New York    NY  United States
+7       133      10013  US  New York    NY  United States
+8       157      10013  US  New York    NY  United States
+9       144      10007  US  New York    NY  United States
+
+formattedAddress  \textbackslash{}
+0                                     [136 Church St, New York, NY 10007, United
+States]
+1                          [57 Warren St (Church St), New York, NY 10007, United
+States]
+2                       [25 Murray St (at Church St), New York, NY 10007, United
+States]
+3     [83 Murray St (btwn Greenwich St \& W Broadway), New York, NY 10007, United
+States]
+4        [145 Duane St (btwn W Broadway \& Church St), New York, NY 10013, United
+States]
+5  [148 Chambers St (btwn West Broadway \& Hudson St), New York, NY 10007, United
+States]
+6                        [88 Reade St (at Church St), New York, NY 10013, United
+States]
+7       [134 Reade St (btwn Hudson and Greenwich St), New York, NY 10013, United
+States]
+8       [159 Duane St (btwn Hudson St. \& W Broadway), New York, NY 10013, United
+States]
+9      [81 Warren St (btw Greenwich \& West Broadway), New York, NY 10007, United
+States]
+
+                      crossStreet neighborhood                        id
+0                             NaN          NaN  5d5f24ec09484500079aee00
+1                       Church St      Tribeca  4af5d65ff964a52091fd21e3
+2                    at Church St          NaN  4c154c9a77cea593c401d260
+3  btwn Greenwich St \& W Broadway          NaN  54148bc6498ea7bb8c05b70a
+4     btwn W Broadway \& Church St          NaN  4a8f2f39f964a520471420e3
+5  btwn West Broadway \& Hudson St          NaN  4adcf23cf964a520cc6221e3
+6                    at Church St          NaN  50ba9119e4b071a4bae6dc10
+7    btwn Hudson and Greenwich St          NaN  48510cf9f964a520a5501fe3
+8    btwn Hudson St. \& W Broadway          NaN  4cd89eeb6e8b5941660c64d2
+9   btw Greenwich \& West Broadway          NaN  5dc6f6a5ea8dfb00080f6faa
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \hypertarget{lets-visualize-these-items-on-the-map-around-our-location}{%
+\paragraph{Let's visualize these items on the map around our
+location}\label{lets-visualize-these-items-on-the-map-around-our-location}}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{48}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{venues\PYZus{}map} \PY{o}{=} \PY{n}{folium}\PY{o}{.}\PY{n}{Map}\PY{p}{(}\PY{n}{location}\PY{o}{=}\PY{p}{[}\PY{n}{latitude}\PY{p}{,} \PY{n}{longitude}\PY{p}{]}\PY{p}{,} \PY{n}{zoom\PYZus{}start}\PY{o}{=}\PY{l+m+mi}{15}\PY{p}{)} \PY{c+c1}{\PYZsh{} generate map centred around Ecco}
+
+
+\PY{c+c1}{\PYZsh{} add Ecco as a red circle mark}
+\PY{n}{folium}\PY{o}{.}\PY{n}{features}\PY{o}{.}\PY{n}{CircleMarker}\PY{p}{(}
+    \PY{p}{[}\PY{n}{latitude}\PY{p}{,} \PY{n}{longitude}\PY{p}{]}\PY{p}{,}
+    \PY{n}{radius}\PY{o}{=}\PY{l+m+mi}{10}\PY{p}{,}
+    \PY{n}{popup}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Ecco}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}
+    \PY{n}{fill}\PY{o}{=}\PY{k+kc}{True}\PY{p}{,}
+    \PY{n}{color}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{red}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}
+    \PY{n}{fill\PYZus{}color}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{red}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}
+    \PY{n}{fill\PYZus{}opacity}\PY{o}{=}\PY{l+m+mf}{0.6}
+    \PY{p}{)}\PY{o}{.}\PY{n}{add\PYZus{}to}\PY{p}{(}\PY{n}{venues\PYZus{}map}\PY{p}{)}
+
+
+\PY{c+c1}{\PYZsh{} add popular spots to the map as blue circle markers}
+\PY{k}{for} \PY{n}{lat}\PY{p}{,} \PY{n}{lng}\PY{p}{,} \PY{n}{label} \PY{o+ow}{in} \PY{n+nb}{zip}\PY{p}{(}\PY{n}{dataframe\PYZus{}filtered}\PY{o}{.}\PY{n}{lat}\PY{p}{,} \PY{n}{dataframe\PYZus{}filtered}\PY{o}{.}\PY{n}{lng}\PY{p}{,} \PY{n}{dataframe\PYZus{}filtered}\PY{o}{.}\PY{n}{categories}\PY{p}{)}\PY{p}{:}
+    \PY{n}{folium}\PY{o}{.}\PY{n}{features}\PY{o}{.}\PY{n}{CircleMarker}\PY{p}{(}
+        \PY{p}{[}\PY{n}{lat}\PY{p}{,} \PY{n}{lng}\PY{p}{]}\PY{p}{,}
+        \PY{n}{radius}\PY{o}{=}\PY{l+m+mi}{5}\PY{p}{,}
+        \PY{n}{popup}\PY{o}{=}\PY{n}{label}\PY{p}{,}
+        \PY{n}{fill}\PY{o}{=}\PY{k+kc}{True}\PY{p}{,}
+        \PY{n}{color}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{blue}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}
+        \PY{n}{fill\PYZus{}color}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{blue}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}
+        \PY{n}{fill\PYZus{}opacity}\PY{o}{=}\PY{l+m+mf}{0.6}
+        \PY{p}{)}\PY{o}{.}\PY{n}{add\PYZus{}to}\PY{p}{(}\PY{n}{venues\PYZus{}map}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} display map}
+\PY{n}{venues\PYZus{}map}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{48}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+<folium.folium.Map at 0x7f13338f5dd8>
+\end{Verbatim}
+\end{tcolorbox}
+        
+    
+
+    
+
+    \hypertarget{explore-trending-venues}{%
+\subsection{5. Explore Trending Venues}\label{explore-trending-venues}}
+
+\begin{quote}
+\texttt{https://api.foursquare.com/v2/venues/}\textbf{trending}\texttt{?client\_id=}\textbf{CLIENT\_ID}\texttt{\&client\_secret=}\textbf{CLIENT\_SECRET}\texttt{\&ll=}\textbf{LATITUDE}\texttt{,}\textbf{LONGITUDE}\texttt{\&v=}\textbf{VERSION}
+\end{quote}
+
+    \hypertarget{now-instead-of-simply-exploring-the-area-around-ecco-you-are-interested-in-knowing-the-venues-that-are-trending-at-the-time-you-are-done-with-your-lunch-meaning-the-places-with-the-highest-foot-traffic.-so-lets-do-that-and-get-the-trending-venues-around-ecco.}{%
+\paragraph{Now, instead of simply exploring the area around Ecco, you
+are interested in knowing the venues that are trending at the time you
+are done with your lunch, meaning the places with the highest foot
+traffic. So let's do that and get the trending venues around
+Ecco.}\label{now-instead-of-simply-exploring-the-area-around-ecco-you-are-interested-in-knowing-the-venues-that-are-trending-at-the-time-you-are-done-with-your-lunch-meaning-the-places-with-the-highest-foot-traffic.-so-lets-do-that-and-get-the-trending-venues-around-ecco.}}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{49}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} define URL}
+\PY{n}{url} \PY{o}{=} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{https://api.foursquare.com/v2/venues/trending?client\PYZus{}id=}\PY{l+s+si}{\PYZob{}\PYZcb{}}\PY{l+s+s1}{\PYZam{}client\PYZus{}secret=}\PY{l+s+si}{\PYZob{}\PYZcb{}}\PY{l+s+s1}{\PYZam{}ll=}\PY{l+s+si}{\PYZob{}\PYZcb{}}\PY{l+s+s1}{,}\PY{l+s+si}{\PYZob{}\PYZcb{}}\PY{l+s+s1}{\PYZam{}v=}\PY{l+s+si}{\PYZob{}\PYZcb{}}\PY{l+s+s1}{\PYZsq{}}\PY{o}{.}\PY{n}{format}\PY{p}{(}\PY{n}{CLIENT\PYZus{}ID}\PY{p}{,} \PY{n}{CLIENT\PYZus{}SECRET}\PY{p}{,} \PY{n}{latitude}\PY{p}{,} \PY{n}{longitude}\PY{p}{,} \PY{n}{VERSION}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} send GET request and get trending venues}
+\PY{n}{results} \PY{o}{=} \PY{n}{requests}\PY{o}{.}\PY{n}{get}\PY{p}{(}\PY{n}{url}\PY{p}{)}\PY{o}{.}\PY{n}{json}\PY{p}{(}\PY{p}{)}
+\PY{n}{results}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{49}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\{'meta': \{'code': 200, 'requestId': '5f1ec88161022762215e71f0'\},
+ 'response': \{'venues': []\}\}
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \hypertarget{check-if-any-venues-are-trending-at-this-time}{%
+\subsubsection{Check if any venues are trending at this
+time}\label{check-if-any-venues-are-trending-at-this-time}}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{50}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k}{if} \PY{n+nb}{len}\PY{p}{(}\PY{n}{results}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{response}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{venues}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{)} \PY{o}{==} \PY{l+m+mi}{0}\PY{p}{:}
+    \PY{n}{trending\PYZus{}venues\PYZus{}df} \PY{o}{=} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{No trending venues are available at the moment!}\PY{l+s+s1}{\PYZsq{}}
+    
+\PY{k}{else}\PY{p}{:}
+    \PY{n}{trending\PYZus{}venues} \PY{o}{=} \PY{n}{results}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{response}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{venues}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}
+    \PY{n}{trending\PYZus{}venues\PYZus{}df} \PY{o}{=} \PY{n}{json\PYZus{}normalize}\PY{p}{(}\PY{n}{trending\PYZus{}venues}\PY{p}{)}
+
+    \PY{c+c1}{\PYZsh{} filter columns}
+    \PY{n}{columns\PYZus{}filtered} \PY{o}{=} \PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{name}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{categories}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{+} \PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{location.distance}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{location.city}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{location.postalCode}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{location.state}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{location.country}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{location.lat}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{location.lng}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}
+    \PY{n}{trending\PYZus{}venues\PYZus{}df} \PY{o}{=} \PY{n}{trending\PYZus{}venues\PYZus{}df}\PY{o}{.}\PY{n}{loc}\PY{p}{[}\PY{p}{:}\PY{p}{,} \PY{n}{columns\PYZus{}filtered}\PY{p}{]}
+
+    \PY{c+c1}{\PYZsh{} filter the category for each row}
+    \PY{n}{trending\PYZus{}venues\PYZus{}df}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{categories}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{=} \PY{n}{trending\PYZus{}venues\PYZus{}df}\PY{o}{.}\PY{n}{apply}\PY{p}{(}\PY{n}{get\PYZus{}category\PYZus{}type}\PY{p}{,} \PY{n}{axis}\PY{o}{=}\PY{l+m+mi}{1}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{51}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} display trending venues}
+\PY{n}{trending\PYZus{}venues\PYZus{}df}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{51}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+'No trending venues are available at the moment!'
+\end{Verbatim}
+\end{tcolorbox}
+        
+    Now, depending on when you run the above code, you might get different
+venues since the venues with the highest foot traffic are fetched live.
+
+    \hypertarget{visualize-trending-venues}{%
+\subsubsection{Visualize trending
+venues}\label{visualize-trending-venues}}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{52}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k}{if} \PY{n+nb}{len}\PY{p}{(}\PY{n}{results}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{response}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{venues}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{)} \PY{o}{==} \PY{l+m+mi}{0}\PY{p}{:}
+    \PY{n}{venues\PYZus{}map} \PY{o}{=} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Cannot generate visual as no trending venues are available at the moment!}\PY{l+s+s1}{\PYZsq{}}
+
+\PY{k}{else}\PY{p}{:}
+    \PY{n}{venues\PYZus{}map} \PY{o}{=} \PY{n}{folium}\PY{o}{.}\PY{n}{Map}\PY{p}{(}\PY{n}{location}\PY{o}{=}\PY{p}{[}\PY{n}{latitude}\PY{p}{,} \PY{n}{longitude}\PY{p}{]}\PY{p}{,} \PY{n}{zoom\PYZus{}start}\PY{o}{=}\PY{l+m+mi}{15}\PY{p}{)} \PY{c+c1}{\PYZsh{} generate map centred around Ecco}
+
+
+    \PY{c+c1}{\PYZsh{} add Ecco as a red circle mark}
+    \PY{n}{folium}\PY{o}{.}\PY{n}{features}\PY{o}{.}\PY{n}{CircleMarker}\PY{p}{(}
+        \PY{p}{[}\PY{n}{latitude}\PY{p}{,} \PY{n}{longitude}\PY{p}{]}\PY{p}{,}
+        \PY{n}{radius}\PY{o}{=}\PY{l+m+mi}{10}\PY{p}{,}
+        \PY{n}{popup}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Ecco}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}
+        \PY{n}{fill}\PY{o}{=}\PY{k+kc}{True}\PY{p}{,}
+        \PY{n}{color}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{red}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}
+        \PY{n}{fill\PYZus{}color}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{red}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}
+        \PY{n}{fill\PYZus{}opacity}\PY{o}{=}\PY{l+m+mf}{0.6}
+    \PY{p}{)}\PY{o}{.}\PY{n}{add\PYZus{}to}\PY{p}{(}\PY{n}{venues\PYZus{}map}\PY{p}{)}
+
+
+    \PY{c+c1}{\PYZsh{} add the trending venues as blue circle markers}
+    \PY{k}{for} \PY{n}{lat}\PY{p}{,} \PY{n}{lng}\PY{p}{,} \PY{n}{label} \PY{o+ow}{in} \PY{n+nb}{zip}\PY{p}{(}\PY{n}{trending\PYZus{}venues\PYZus{}df}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{location.lat}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{,} \PY{n}{trending\PYZus{}venues\PYZus{}df}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{location.lng}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{,} \PY{n}{trending\PYZus{}venues\PYZus{}df}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{name}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{)}\PY{p}{:}
+        \PY{n}{folium}\PY{o}{.}\PY{n}{features}\PY{o}{.}\PY{n}{CircleMarker}\PY{p}{(}
+            \PY{p}{[}\PY{n}{lat}\PY{p}{,} \PY{n}{lng}\PY{p}{]}\PY{p}{,}
+            \PY{n}{radius}\PY{o}{=}\PY{l+m+mi}{5}\PY{p}{,}
+            \PY{n}{poup}\PY{o}{=}\PY{n}{label}\PY{p}{,}
+            \PY{n}{fill}\PY{o}{=}\PY{k+kc}{True}\PY{p}{,}
+            \PY{n}{color}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{blue}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}
+            \PY{n}{fill\PYZus{}color}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{blue}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}
+            \PY{n}{fill\PYZus{}opacity}\PY{o}{=}\PY{l+m+mf}{0.6}
+        \PY{p}{)}\PY{o}{.}\PY{n}{add\PYZus{}to}\PY{p}{(}\PY{n}{venues\PYZus{}map}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{53}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} display map}
+\PY{n}{venues\PYZus{}map}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{53}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+'Cannot generate visual as no trending venues are available at the moment!'
+\end{Verbatim}
+\end{tcolorbox}
+        
+    
+
+    
+
+    \hypertarget{thank-you-for-completing-this-lab}{%
+\subsubsection{Thank you for completing this
+lab!}\label{thank-you-for-completing-this-lab}}
+
+This notebook was created by
+\href{https://www.linkedin.com/in/aklson/}{Alex Aklson}. I hope you
+found this lab interesting and educational. Feel free to contact me if
+you have any questions!
+
+    This notebook is part of a course on \textbf{Coursera} called
+\emph{Applied Data Science Capstone}. If you accessed this notebook
+outside the course, you can take this course online by clicking
+\href{http://cocl.us/DP0701EN_Coursera_Week2_LAB1}{here}.
+
+    Copyright © 2018
+\href{https://cognitiveclass.ai/?utm_source=bducopyrightlink\&utm_medium=dswb\&utm_campaign=bdu}{Cognitive
+Class}. This notebook and its source code are released under the terms
+of the \href{https://bigdatauniversity.com/mit-license/}{MIT License}.
+
+
+    % Add a bibliography block to the postdoc
+    
+    
+    
+\end{document}
